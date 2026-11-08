@@ -1,77 +1,56 @@
 #!/usr/bin/env bash
+# Convert every SVG under assets/**/svg/ to a sibling PNG under assets/**/png/.
+# Output keeps each SVG's intrinsic size and aspect ratio.
 #
-# svg-to-png.sh — Convert SVG assets to PNG.
-#
-# Usage:
-#   ./assets/svg-to-png.sh                 # convert all of assets/svg/*.svg
-#   ./assets/svg-to-png.sh logo            # convert one asset by name
-#   SCALE=2 ./assets/svg-to-png.sh         # 2x resolution
-#
-# Output goes to assets/png/<name>.png. Requires one of: rsvg-convert,
-# magick/convert, or qlmanage (macOS).
+# Usage: assets/svg-to-png.sh
+
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SVG_DIR="$ROOT/assets/svg"
-PNG_DIR="$ROOT/assets/png"
-SCALE="${SCALE:-1}"
+ASSETS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+JOBS="${JOBS:-4}"
 
-mkdir -p "$PNG_DIR"
-
-if command -v rsvg-convert >/dev/null 2>&1; then
-    convert() {
-        rsvg-convert -w "$((WIDTH * SCALE))" -h "$((HEIGHT * SCALE))" "$1" -o "$2"
-    }
-elif command -v magick >/dev/null 2>&1; then
-    convert() {
-        magick -background none -density "$((96 * SCALE))" "$1" -resize "${WIDTH}x${HEIGHT}" "$2"
-    }
-elif command -v convert >/dev/null 2>&1; then
-    convert() {
-        convert -background none -density "$((96 * SCALE))" "$1" -resize "${WIDTH}x${HEIGHT}" "$2"
-    }
-elif command -v qlmanage >/dev/null 2>&1; then
-    convert() {
-        qlmanage -t -s "$((WIDTH * SCALE))" -o "$PNG_DIR" "$1" >/dev/null 2>&1
-        mv "$PNG_DIR/$(basename "$1" .svg).png" "$2"
-    }
-else
-    echo "error: need rsvg-convert, ImageMagick, or qlmanage" >&2
-    exit 1
-fi
-
-# width/height per asset (used by renderers that need explicit output size)
-width_of() {
-    case "$(basename "$1")" in
-        logo.svg) echo 512 ;;
-        og.svg)   echo 1280 ;;
-        *)        echo 512 ;;
-    esac
-}
-height_of() {
-    case "$(basename "$1")" in
-        logo.svg) echo 512 ;;
-        og.svg)   echo 640 ;;
-        *)        echo 512 ;;
-    esac
+command -v rsvg-convert >/dev/null 2>&1 || {
+  echo "rsvg-convert is required but not installed" >&2
+  echo "  macOS:  brew install librsvg" >&2
+  echo "  Debian: sudo apt-get install librsvg2-bin" >&2
+  echo "  Arch:   sudo pacman -S librsvg" >&2
+  exit 1
 }
 
-if [[ $# -gt 0 ]]; then
-    svgs=()
-    for name in "$@"; do
-        svgs+=("$SVG_DIR/${name%.svg}.svg")
-    done
-else
-    shopt -s nullglob
-    svgs=("$SVG_DIR"/*.svg)
-fi
+pids=()
+count=0
+while IFS= read -r -d '' svg; do
+  (
+    png="$(dirname "$svg" | sed 's|/svg$|/png|')/$(basename "${svg%.svg}").png"
 
-for svg in "${svgs[@]}"; do
-    [[ -f "$svg" ]] || { echo "skip (missing): $svg" >&2; continue; }
-    name="$(basename "$svg" .svg)"
-    WIDTH="$(width_of "$svg")"
-    HEIGHT="$(height_of "$svg")"
-    out="$PNG_DIR/$name.png"
-    convert "$svg" "$out"
-    echo "wrote $out"
+    if [ ! -s "$svg" ]; then
+      echo "skip (empty): $svg" >&2
+      exit 0
+    fi
+
+    mkdir -p "$(dirname "$png")"
+    if rsvg-convert -o "$png" "$svg"; then
+      echo "converted $svg -> $png"
+    else
+      echo "failed: $svg" >&2
+      exit 1
+    fi
+  ) &
+  pids+=("$!")
+  count=$((count + 1))
+  if [ "${#pids[@]}" -ge "$JOBS" ]; then
+    wait "${pids[0]}" || true
+    pids=("${pids[@]:1}")
+  fi
+done < <(find "$ASSETS_DIR" -type f -path '*/svg/*.svg' -print0)
+
+status=0
+for pid in "${pids[@]}"; do
+  wait "$pid" || status=1
 done
+
+if [ "$count" -eq 0 ]; then
+  echo "no svg files found under $ASSETS_DIR/*/svg" >&2
+fi
+
+exit "$status"
