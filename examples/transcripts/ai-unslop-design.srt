@@ -1,0 +1,28 @@
+1
+00:00:00,000 --> 00:00:05,200
+Delete filler badges, drop redundant labels, un-etalize the random word in your header.
+
+2
+00:00:05,200 --> 00:00:12,640
+Only use mono where necessary. Use a design system, show the actual product, and large the main feature.
+
+3
+00:00:12,640 --> 00:00:19,280
+Group with spacing, add specificity to your headline, emphasize the CTA, add an accent color,
+
+4
+00:00:19,280 --> 00:00:23,200
+keep icons consistent, remove unnecessary embellishments.
+
+5
+00:00:23,200 --> 00:00:26,800
+Inner quarter radius equals outer quarter radius minus padding.
+
+6
+00:00:26,800 --> 00:00:33,440
+Improve text contrast, wrap headline text properly, align by eye, not just by pixel size,
+
+7
+00:00:33,440 --> 00:00:38,480
+tabular numbs, add loading states, animate useful feedback. Follow for more!
+

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>transcribers — video and audio to text, locally</title>
+    <meta
+      name="description"
+      content="Extract transcripts from video and audio files with a single Rust binary. ffmpeg + whisper.cpp, fully local." />
+    <!-- <base href="/transcribers/" /> -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav>
+      <div
+        class="wrap"
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+        ">
+        <a class="brand" href="#">
+          <svg width="28" height="28" viewBox="0 0 512 512" aria-hidden="true">
+            <path
+              d="M120 128h272a56 56 0 0 1 56 56v80a56 56 0 0 1-56 56h-152l-64 56v-56h-56a56 56 0 0 1-56-56V184a56 56 0 0 1 56-56z"
+              fill="none"
+              stroke="#111"
+              stroke-width="48"
+              stroke-linejoin="round" />
+            <line
+              x1="184"
+              y1="188"
+              x2="184"
+              y2="260"
+              stroke="#111"
+              stroke-width="48"
+              stroke-linecap="round" />
+            <line
+              x1="256"
+              y1="164"
+              x2="256"
+              y2="284"
+              stroke="#111"
+              stroke-width="48"
+              stroke-linecap="round" />
+            <line
+              x1="328"
+              y1="188"
+              x2="328"
+              y2="260"
+              stroke="#111"
+              stroke-width="48"
+              stroke-linecap="round" />
+          </svg>
+          transcribers
+        </a>
+        <a class="nav-link" href="https://github.com/hieudoanm/transcribers"
+          >GitHub</a
+        >
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="wrap">
+        <h1>Turn video and audio into text, offline.</h1>
+        <p class="sub">
+          One Rust binary extracts the audio track with ffmpeg and transcribes
+          it with whisper.cpp — mp4, mkv, mov, wav, mp3 and more, with no cloud
+          and no account.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#install">Install</a>
+          <a
+            class="btn btn-ghost"
+            href="https://github.com/hieudoanm/transcribers"
+            >View on GitHub</a
+          >
+        </div>
+
+        <div class="terminal" role="img" aria-label="Example terminal output">
+          <div class="terminal-bar">
+            <span class="dot"></span><span class="dot"></span
+            ><span class="dot"></span>
+            <span class="cmd">transcribers talk.mp4 -f srt -o talk</span>
+          </div>
+          <pre><span class="comment"># wrote talk.srt</span>
+
+<span class="idx">1</span>
+<span class="ts">00:00:00,000</span> --&gt; <span class="ts">00:00:05,200</span>
+Delete filler badges, drop redundant labels, un-etalize the
+random word in your header.
+
+<span class="idx">2</span>
+<span class="ts">00:00:05,200</span> --&gt; <span class="ts">00:00:12,640</span>
+Only use mono where necessary. Use a design system, show the
+actual product, and large the main feature.</pre>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Everything happens on your machine.</h2>
+          <p>
+            Your media never leaves your disk. The model runs locally through
+            whisper.cpp.
+          </p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="4" y="10" width="16" height="10" rx="2" />
+              <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+            </svg>
+            <h3>Fully local</h3>
+            <p>
+              No uploads, no API keys, no accounts. Audio is extracted and
+              transcribed on your own hardware.
+            </p>
+          </div>
+          <div class="card">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <path d="M14 2v6h6" />
+              <path d="M9 13h6M9 17h6" />
+            </svg>
+            <h3>Four output formats</h3>
+            <p>
+              Plain text, SRT and WebVTT subtitles, or JSON with millisecond
+              timestamps.
+            </p>
+          </div>
+          <div class="card">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <path d="M7 10l5 5 5-5" />
+              <path d="M12 15V3" />
+            </svg>
+            <h3>Models on demand</h3>
+            <p>
+              Pick tiny through large-v3 by name; missing models download once
+              into a local cache.
+            </p>
+          </div>
+          <div class="card">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg>
+            <h3>One small binary</h3>
+            <p>
+              whisper.cpp is compiled in — about 1.6&nbsp;MB, statically linked,
+              only ffmpeg required.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="install" style="border-top: 1px solid var(--line)">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Install in one command.</h2>
+          <p>
+            Prebuilt binaries for macOS and Linux, or build from source with
+            Cargo.
+          </p>
+        </div>
+        <div class="install-grid">
+          <div class="install-card">
+            <h3>Prebuilt binary</h3>
+            <div class="code">
+              <button class="copy-btn" type="button">Copy</button>
+              <pre>curl -fsSL https://raw.githubusercontent.com/hieudoanm/transcribers/main/scripts/install.sh | bash</pre>
+            </div>
+            <p class="note">
+              Installs to /usr/local/bin. Requires ffmpeg on PATH.
+            </p>
+          </div>
+          <div class="install-card">
+            <h3>From source</h3>
+            <div class="code">
+              <button class="copy-btn" type="button">Copy</button>
+              <pre>cargo install --git https://github.com/hieudoanm/transcribers transcribers</pre>
+            </div>
+            <p class="note">
+              Needs cmake for the whisper.cpp build. whisper-cli is not
+              required.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div
+        class="wrap"
+        style="display: flex; justify-content: space-between; width: 100%">
+        <span>&copy; 2026 transcribers</span>
+        <span
+          ><a href="https://github.com/hieudoanm/transcribers"
+            >github.com/hieudoanm/transcribers</a
+          ></span
+        >
+      </div>
+    </footer>
+    <script src="scripts.js" defer></script>
+  </body>
+</html>
