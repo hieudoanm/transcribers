@@ -40,6 +40,7 @@
   <main id="top">
     <section class="hero">
       <div class="container hero-inner">
+        <div class="hero-content">
         <h1>Turn video and audio into text, offline.</h1>
         <p class="lede">
           One Rust binary extracts the audio track with ffmpeg and transcribes
@@ -55,6 +56,16 @@
           <div><dt>~1.6&nbsp;MB</dt><dd>single binary</dd></div>
           <div><dt>0</dt><dd>cloud calls</dd></div>
         </dl>
+        </div>
+        <figure class="terminal hero-demo">
+          <figcaption>SRT subtitles</figcaption>
+          <pre><code><span class="prompt">$</span> transcribers talk.mp4 -f srt -o talk
+<span class="out"># wrote talk.srt</span>
+
+<span class="idx">1</span>
+<span class="ts">00:00:00,000</span> --&gt; <span class="ts">00:00:05,200</span>
+Delete filler badges, drop redundant labels…</code></pre>
+        </figure>
       </div>
     </section>
 
