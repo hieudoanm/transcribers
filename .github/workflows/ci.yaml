@@ -51,7 +51,7 @@ jobs:
         run: |
           cp "target/${{ matrix.target }}/release/transcribers" "transcribers-${{ matrix.asset }}"
           ls -lh "transcribers-${{ matrix.asset }}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: transcribers-${{ matrix.asset }}
           path: transcribers-${{ matrix.asset }}
@@ -63,7 +63,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: transcribers-*
           merge-multiple: true
