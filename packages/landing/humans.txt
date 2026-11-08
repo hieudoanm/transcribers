@@ -1,0 +1,9 @@
+/* TEAM */
+Project: transcribers — video and audio to text, locally
+Site: https://hieudoanm.github.io/transcribers/
+Source: https://github.com/hieudoanm/transcribers
+
+/* SITE */
+Last update: 2026/11/08
+Language: English
+Doctype: HTML5
