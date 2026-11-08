@@ -13,11 +13,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.4.0
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@v2.9.3
       - run: cargo fmt --all -- --check
       - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test --workspace
@@ -36,7 +36,7 @@ jobs:
             asset: linux-x86_64
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.4.0
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
@@ -45,13 +45,13 @@ jobs:
           if ! command -v cmake >/dev/null; then
             if [ "$RUNNER_OS" = "macOS" ]; then brew install cmake; else sudo apt-get update && sudo apt-get install -y cmake; fi
           fi
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@v2.9.3
       - run: cargo build --release --target ${{ matrix.target }}
       - name: Package binary
         run: |
           cp "target/${{ matrix.target }}/release/transcribers" "transcribers-${{ matrix.asset }}"
           ls -lh "transcribers-${{ matrix.asset }}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4.6.2
         with:
           name: transcribers-${{ matrix.asset }}
           path: transcribers-${{ matrix.asset }}
@@ -63,7 +63,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4.3.0
         with:
           pattern: transcribers-*
           merge-multiple: true
@@ -89,9 +89,9 @@ jobs:
       group: pages
       cancel-in-progress: true
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/checkout@v4.4.0
+      - uses: actions/configure-pages@v5.0.0
+      - uses: actions/upload-pages-artifact@v3.0.1
         with:
           path: packages/landing
-      - uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4.0.5
