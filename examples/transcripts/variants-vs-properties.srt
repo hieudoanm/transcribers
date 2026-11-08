@@ -1,0 +1,76 @@
+1
+00:00:00,000 --> 00:00:02,480
+You don't need 48 button variants.
+
+2
+00:00:02,480 --> 00:00:05,440
+Here's why most component sets get out of control.
+
+3
+00:00:05,440 --> 00:00:07,760
+Variants are for things that change the look.
+
+4
+00:00:07,760 --> 00:00:09,520
+Type, state, and size.
+
+5
+00:00:09,520 --> 00:00:11,680
+Primary, hover, disabled.
+
+6
+00:00:11,680 --> 00:00:14,400
+Properties are for things that change the content.
+
+7
+00:00:14,400 --> 00:00:18,240
+The text, a hidden icon, or which icon is shown.
+
+8
+00:00:18,240 --> 00:00:20,480
+Three types, four states, two sizes,
+
+9
+00:00:20,480 --> 00:00:22,080
+with and without an icon.
+
+10
+00:00:22,080 --> 00:00:23,840
+That's 48 variants.
+
+11
+00:00:23,840 --> 00:00:26,000
+Turn the icon into a Boolean property,
+
+12
+00:00:26,000 --> 00:00:27,840
+and it drops to 24.
+
+13
+00:00:27,840 --> 00:00:30,160
+Same button, half the variants.
+
+14
+00:00:30,160 --> 00:00:32,880
+Pro tip, use a text property for the label,
+
+15
+00:00:32,880 --> 00:00:36,880
+and instance swap for the icon so nobody has to detach.
+
+16
+00:00:36,880 --> 00:00:37,760
+Save this?
+
+17
+00:00:37,760 --> 00:00:39,360
+Variants change the look.
+
+18
+00:00:39,360 --> 00:00:41,280
+Properties change the content.
+
+19
+00:00:41,280 --> 00:00:45,920
+Learn UX and UI Design Live at Agile Design School.
+
