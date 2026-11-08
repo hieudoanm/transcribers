@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 512 512" aria-hidden="true">
+            <path
+              d="M120 128h272a56 56 0 0 1 56 56v80a56 56 0 0 1-56 56h-152l-64 56v-56h-56a56 56 0 0 1-56-56V184a56 56 0 0 1 56-56z"
+              fill="none"
+              stroke="#111"
+              stroke-width="48"
+              stroke-linejoin="round" />
+            <line
+              x1="184"
+              y1="188"
+              x2="184"
+              y2="260"
+              stroke="#111"
+              stroke-width="48"
+              stroke-linecap="round" />
+            <line
+              x1="256"
+              y1="164"
+              x2="256"
+              y2="284"
+              stroke="#111"
+              stroke-width="48"
+              stroke-linecap="round" />
+            <line
+              x1="328"
+              y1="188"
+              x2="328"
+              y2="260"
+              stroke="#111"
+              stroke-width="48"
+              stroke-linecap="round" />
+          </svg>
