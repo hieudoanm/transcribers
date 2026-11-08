@@ -63,6 +63,7 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v8
         with:
           pattern: transcribers-*
@@ -74,13 +75,13 @@ jobs:
           if ! gh release view latest >/dev/null 2>&1; then
             gh release create latest \
               --title "transcribers latest" \
-              --notes "Latest build of transcribers. Assets are overwritten on every push to main."
+              --notes-file README.md
           fi
           gh release upload latest transcribers-* --clobber
-          gh release edit latest --latest --title "transcribers latest"
+          gh release edit latest --latest --title "transcribers latest" --notes-file README.md
 
   pages:
-    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch')
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     permissions:
       pages: write
