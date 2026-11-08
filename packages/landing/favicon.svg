@@ -1,32 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 512 512" aria-hidden="true">
-            <path
-              d="M120 128h272a56 56 0 0 1 56 56v80a56 56 0 0 1-56 56h-152l-64 56v-56h-56a56 56 0 0 1-56-56V184a56 56 0 0 1 56-56z"
-              fill="none"
-              stroke="#111"
-              stroke-width="48"
-              stroke-linejoin="round" />
-            <line
-              x1="184"
-              y1="188"
-              x2="184"
-              y2="260"
-              stroke="#111"
-              stroke-width="48"
-              stroke-linecap="round" />
-            <line
-              x1="256"
-              y1="164"
-              x2="256"
-              y2="284"
-              stroke="#111"
-              stroke-width="48"
-              stroke-linecap="round" />
-            <line
-              x1="328"
-              y1="188"
-              x2="328"
-              y2="260"
-              stroke="#111"
-              stroke-width="48"
-              stroke-linecap="round" />
-          </svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <pattern id="grid" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M16 0H0V16" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="512" height="512" fill="#ffffff"/>
+  <rect width="512" height="512" fill="url(#grid)"/>
+  <g transform="translate(64 64)" fill="none" stroke="#111827" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M54 72H330Q376 72 376 104V232Q376 272 330 272H192L134 312V272H54Q8 272 8 232V104Q8 72 54 72Z" stroke-width="16"/>
+    <g stroke-width="16">
+      <path d="M144 124V220"/>
+      <path d="M192 104V240"/>
+      <path d="M240 124V220"/>
+    </g>  </g>
+</svg>
