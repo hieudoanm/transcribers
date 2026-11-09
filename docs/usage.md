@@ -15,15 +15,20 @@ whisper.cpp (compiled into the binary). Requires `ffmpeg` on `PATH`.
 
 ## Options
 
-| Option                    | Default   | Description                                                 |
-| ------------------------- | --------- | ----------------------------------------------------------- |
-| `-m`, `--model <MODEL>`   | `base.en` | Model name or path to a `.bin` file                         |
-| `-l`, `--language <LANG>` | `auto`    | Spoken language code or `auto` for detection                |
-| `-f`, `--format <FORMAT>` | `srt`     | Output format: `txt`, `srt`, `vtt`, `json`                  |
-| `-t`, `--threads <N>`     | `4`       | Decoder threads                                             |
-| `-o`, `--output <PATH>`   | stdout    | Write output to `PATH` instead of stdout                    |
-| `--keep-audio`            | off       | Keep the extracted WAV file (path printed to stderr/stdout) |
-| `-h`, `--help`            | —         | Show help                                                   |
+| Option                      | Default   | Description                                                                  |
+| --------------------------- | --------- | ---------------------------------------------------------------------------- |
+| `-m`, `--model <MODEL>`     | `base.en` | Model name or path to a `.bin` file                                          |
+| `--list-models`             | —         | List known model names and exit                                              |
+| `-l`, `--language <LANG>`   | `auto`    | Spoken language code or `auto` for detection                                 |
+| `-f`, `--format <FORMAT>`   | `srt`     | Output format: `txt`, `srt`, `vtt`, `json`                                   |
+| `-t`, `--threads <N>`       | auto      | Decoder threads (defaults to available parallelism, capped at 8)            |
+| `--start <SEC>`             | `0`       | Start transcription at `SEC` seconds into the media                          |
+| `--duration <SEC>`          | end       | Transcribe at most `SEC` seconds                                             |
+| `--prompt <TEXT>`           | —         | Initial prompt to bias recognition (names, jargon, context)                  |
+| `--translate`               | off       | Translate speech into English                                                |
+| `-o`, `--output <PATH>`     | stdout    | Write output to `PATH` instead of stdout (`-` = stdout)                      |
+| `--keep-audio`              | off       | Keep the extracted 16 kHz WAV (copied next to output / cwd, path on stderr) |
+| `-h`, `--help`              | —         | Show help                                                                    |
 
 ## Examples
 
@@ -40,6 +45,12 @@ transcribers video.mp4 --keep-audio
 
 # force English with a bigger model
 transcribers video.mp4 --model small.en --language en
+
+# transcribe only a clip, with a prompt hint
+transcribers video.mp4 --start 30 --duration 120 --prompt "Dr. Smith"
+
+# list the model names accepted by --model
+transcribers --list-models
 ```
 
 When `-o` is given without a file extension, the format's extension is
@@ -57,8 +68,11 @@ extension it is used as-is.
 ## Models
 
 Model names map to `ggml-<name>.bin` files downloaded automatically on first
-use into `~/.cache/transcribers/models/` (`$XDG_CACHE_HOME/transcribers/models`
-when set). Already-downloaded models are reused — no further network access.
+use into `$XDG_CACHE_HOME/transcribers/models/` (`~/.cache/transcribers/models`
+elsewhere, `%LOCALAPPDATA%\transcribers\models` on Windows;
+`TRANSCRIBERS_MODEL_DIR` overrides the directory entirely). Run
+`transcribers --list-models` for the accepted names. Already-downloaded models
+are reused — no further network access.
 
 Common choices:
 

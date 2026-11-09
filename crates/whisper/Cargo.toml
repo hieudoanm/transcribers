@@ -1,7 +1,10 @@
 [package]
 name = "whisper"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
 
 [dependencies]
 whisper-rs = "=0.16.0"
+
+[dev-dependencies]
+serde_json = "1"

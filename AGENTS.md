@@ -40,6 +40,9 @@ into the binary at build time):
 ## Conventions
 
 - Keep crates lean; errors are `Result<_, String>`.
+- whisper crate expects 16 kHz mono PCM WAV; `read_wav_f32` rejects other
+  rates/channel counts. Unit tests live in `crates/*/tests/` and inline
+  `#[cfg(test)]` modules.
 - Each crate has one responsibility; don't merge crates without reason.
 - Shell out via `std::process::Command`, never reimplement ffmpeg/whisper logic.
 - Update `README.md` and `docs/` when behaviour changes.

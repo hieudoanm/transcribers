@@ -60,7 +60,7 @@
         <figure class="terminal hero-demo">
           <figcaption>SRT subtitles</figcaption>
           <pre><code><span class="prompt">$</span> transcribers talk.mp4 -f srt -o talk
-<span class="out"># wrote talk.srt</span>
+<span class="out">wrote talk.srt</span>
 
 <span class="idx">1</span>
 <span class="ts">00:00:00,000</span> --&gt; <span class="ts">00:00:05,200</span>
@@ -139,7 +139,7 @@ Delete filler badges, drop redundant labels…</code></pre>
           <figure class="terminal terminal-wide">
             <figcaption>Transcribe to SRT</figcaption>
             <pre><code><span class="prompt">$</span> transcribers talk.mp4 -f srt -o talk
-<span class="out"># wrote talk.srt</span>
+<span class="out">wrote talk.srt</span>
 
 <span class="idx">1</span>
 <span class="ts">00:00:00,000</span> --&gt; <span class="ts">00:00:05,200</span>
@@ -152,14 +152,17 @@ Only use mono where necessary. Use a design system, show the
 actual product, and large the main feature.</code></pre>
           </figure>
           <figure class="terminal">
-            <figcaption>Plain text to stdout</figcaption>
+            <figcaption>SRT to stdout (default)</figcaption>
             <pre><code><span class="prompt">$</span> transcribers talk.mp4
+<span class="idx">1</span>
+<span class="ts">00:00:00,000</span> --&gt; <span class="ts">00:00:05,200</span>
 Delete filler badges, drop redundant labels…</code></pre>
           </figure>
           <figure class="terminal">
             <figcaption>Pick a model</figcaption>
             <pre><code><span class="prompt">$</span> transcribers talk.mp4 --model small
-<span class="out">using model: small (downloaded to ~/.cache/transcribers/models)</span></code></pre>
+<span class="out">downloading model ggml-small.bin ...</span>
+<span class="out">transcribing... 100%</span></code></pre>
           </figure>
         </div>
       </div>
@@ -177,7 +180,7 @@ Delete filler badges, drop redundant labels…</code></pre>
           <pre><code><span class="prompt">$</span> curl -fsSL https://raw.githubusercontent.com/hieudoanm/transcribers/main/scripts/install.sh | bash
 <span class="out">Installed to /usr/local/bin/transcribers</span>
 <span class="prompt">$</span> transcribers talk.mp4 -f srt -o talk
-<span class="out"># wrote talk.srt</span></code></pre>
+<span class="out">wrote talk.srt</span></code></pre>
         </figure>
         <p class="install-note">Or from source:
         <code>cargo install --git https://github.com/hieudoanm/transcribers transcribers</code>

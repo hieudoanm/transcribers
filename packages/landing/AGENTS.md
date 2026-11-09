@@ -3,13 +3,12 @@
 ## Overview
 
 Static marketing/landing page for transcribers. A single `index.html` +
-`styles.css` + a small `scripts.js` — no framework, no build step.
+`styles.css` — no framework, no build step, no JavaScript.
 Deployed to GitHub Pages as-is.
 
 ## Conventions
 
-- Keep it dependency-free: edit `index.html`/`styles.css`/`scripts.js`
-  directly.
+- Keep it dependency-free: edit `index.html`/`styles.css` directly.
 - Asset URLs are relative (`favicon.svg`, `og-image.png`, `styles.css`) so
   the page works under the `/transcribers/` Pages base path and from
   `file://`.
