@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/png/logo.png" alt="transcribers logo" width="96">
+  <img src="assets/branding/png/logo.png" alt="transcribers logo" width="96">
 </p>
 
 <h1 align="center">transcribers</h1>
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/png/og.png" alt="transcribers — extract transcripts from video and audio files locally" width="720">
+  <img src="assets/branding/png/og.png" alt="transcribers — extract transcripts from video and audio files locally" width="720">
 </p>
 
 - Extract transcripts from video and audio files with a single Rust binary.
@@ -38,8 +38,7 @@ curl -fsSL https://raw.githubusercontent.com/hieudoanm/transcribers/main/scripts
 ./scripts/install-local.sh
 ```
 
-Both install to `/usr/local/bin` (`install.sh`) or `~/.local/bin`
-(`install-local.sh`); override with `INSTALL_DIR`.
+Both install to `~/.local/bin` by default; override with `INSTALL_DIR`.
 
 ### Build from source
 
@@ -63,10 +62,10 @@ transcribers video.mp4 --model small.en --language en --format vtt
 transcribers video.mp4 --format json --output transcript.json
 ```
 
-Options: `-m/--model` (default `base.en`), `-l/--language` (default `auto`),
-`-f/--format` (`txt`, `srt`, `vtt`, `json` — default `srt`), `-o/--output`,
-`-t/--threads`,
-`--keep-audio`, `-V/--version`.
+Options: `-m/--model` (default `base.en`), `--list-models`,
+`-l/--language` (default `auto`), `-f/--format` (`txt`, `srt`, `vtt`, `json` —
+default `srt`), `-o/--output`, `-t/--threads`, `--start`, `--duration`,
+`--prompt`, `--translate`, `--keep-audio`, `-V/--version`.
 
 Model names (`tiny`, `base`, `small`, `medium`, `large`, `*.en`, ...) are
 downloaded from <https://huggingface.co/ggerganov/whisper.cpp>; you can also

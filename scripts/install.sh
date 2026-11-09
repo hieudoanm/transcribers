@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 REPO="hieudoanm/transcribers"
-INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"
+INSTALL_DIR="${INSTALL_DIR:-$HOME/.local/bin}"
 
 check_deps() {
   missing=0
@@ -23,19 +23,41 @@ echo "Installing transcribers..."
 # Try to download prebuilt binary if available
 OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 ARCH="$(uname -m)"
-if [ "$ARCH" = "x86_64" ]; then
-  ARCH="x86_64"
-elif [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then
-  ARCH="aarch64"
-fi
+case "$ARCH" in
+  x86_64 | amd64) ARCH="x86_64" ;;
+  arm64 | aarch64) ARCH="aarch64" ;;
+esac
 
 BINARY_URL="https://github.com/${REPO}/releases/latest/download/transcribers-${OS}-${ARCH}"
+CHECKSUMS_URL="https://github.com/${REPO}/releases/latest/download/transcribers-checksums.txt"
+TMP_BIN="$(mktemp -t transcribers.XXXXXX)"
+TMP_SUMS="$(mktemp -t transcribers-sums.XXXXXX)"
+trap 'rm -f "$TMP_BIN" "$TMP_SUMS"' EXIT
+
 if command -v curl >/dev/null 2>&1; then
-  if curl -fsSL "$BINARY_URL" -o /tmp/transcribers 2>/dev/null; then
-    chmod +x /tmp/transcribers
-    sudo mv /tmp/transcribers "${INSTALL_DIR}/transcribers" 2>/dev/null || mv /tmp/transcribers "${INSTALL_DIR}/transcribers"
-    echo "transcribers installed to ${INSTALL_DIR}/transcribers"
-    "${INSTALL_DIR}/transcribers" --version || true
+  if curl -fsSL --connect-timeout 15 --retry 3 -o "$TMP_BIN" "$BINARY_URL" 2>/dev/null \
+      && [ -s "$TMP_BIN" ]; then
+    # Verify against the published checksums when they are available; an
+    # absent file (older release) skips the check, a mismatch aborts.
+    if curl -fsSL --connect-timeout 15 "$CHECKSUMS_URL" -o "$TMP_SUMS" 2>/dev/null; then
+      expected="$(awk -v f="transcribers-${OS}-${ARCH}" '$2 == f {print $1}' "$TMP_SUMS")"
+      if [ -n "$expected" ]; then
+        actual="$(shasum -a 256 "$TMP_BIN" | awk '{print $1}')"
+        if [ "$actual" != "$expected" ]; then
+          echo "error: checksum mismatch for transcribers-${OS}-${ARCH}" >&2
+          echo "       expected $expected" >&2
+          echo "       got      $actual" >&2
+          exit 1
+        fi
+        echo "checksum verified"
+      fi
+    fi
+    chmod +x "$TMP_BIN"
+    mkdir -p "$INSTALL_DIR"
+    install -m 0755 "$TMP_BIN" "$INSTALL_DIR/transcribers" 2>/dev/null \
+      || mv "$TMP_BIN" "$INSTALL_DIR/transcribers"
+    echo "transcribers installed to $INSTALL_DIR/transcribers"
+    "$INSTALL_DIR/transcribers" --version || true
     check_deps
     exit 0
   fi
@@ -52,12 +74,13 @@ if ! command -v cmake >/dev/null 2>&1; then
 fi
 
 TMP_DIR="$(mktemp -d)"
-trap 'rm -rf "$TMP_DIR"' EXIT
+trap 'rm -rf "$TMP_DIR" "$TMP_BIN" "$TMP_SUMS"' EXIT
 cd "$TMP_DIR"
 git clone --depth 1 "https://github.com/${REPO}.git" transcribers
 cd transcribers
 cargo build --release
-sudo cp target/release/transcribers "${INSTALL_DIR}/transcribers" 2>/dev/null || cp target/release/transcribers "${INSTALL_DIR}/transcribers"
-echo "transcribers installed to ${INSTALL_DIR}/transcribers"
-"${INSTALL_DIR}/transcribers" --version || true
+mkdir -p "$INSTALL_DIR"
+install -m 0755 target/release/transcribers "$INSTALL_DIR/transcribers"
+echo "transcribers installed to $INSTALL_DIR/transcribers"
+"$INSTALL_DIR/transcribers" --version || true
 check_deps

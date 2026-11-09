@@ -26,8 +26,8 @@ transcribers/           Cargo workspace root
 
 - `crates/ffmpeg` — owns the ffmpeg invocation (`-vn -ac 1 -ar 16000 -f wav`).
 - `crates/models` — resolves a model name to `~/.cache/transcribers/models/
-  ggml-<name>.bin`, downloading from Hugging Face when missing. Existing paths
-  are used as-is.
+  ggml-<name>.bin` (or `$TRANSCRIBERS_MODEL_DIR`), downloading from
+  Hugging Face when missing. Existing paths are used as-is.
 - `crates/whisper` — owns the `Format` enum (`txt`/`srt`/`vtt`/`json`), WAV
   decoding to f32 samples, the `whisper-rs` transcription call, and renders
   segments to the output formats itself (no `whisper-cli` needed).
@@ -38,7 +38,7 @@ transcribers/           Cargo workspace root
 
 - `scripts/install.sh` — curl-able installer: tries a GitHub release binary
   (`transcribers-{os}-{arch}`), falls back to `git clone` + `cargo build
-  --release` in a temp dir. Installs to `/usr/local/bin` (or `$INSTALL_DIR`)
+  --release` in a temp dir. Installs to `~/.local/bin` (or `$INSTALL_DIR`)
   and warns when `ffmpeg`/`curl` are missing.
 - `scripts/install-local.sh` — rebuilds the local checkout only when sources
   are newer than `target/release/transcribers`, installs to `~/.local/bin`

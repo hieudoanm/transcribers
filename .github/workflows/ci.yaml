@@ -21,6 +21,11 @@ jobs:
           components: rustfmt, clippy
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2.9.3
+      - name: Ensure cmake
+        run: |
+          if ! command -v cmake >/dev/null; then
+            sudo apt-get update && sudo apt-get install -y cmake
+          fi
       - name: Check formatting
         run: cargo fmt --all -- --check
       - name: Clippy
@@ -81,6 +86,9 @@ jobs:
         with:
           pattern: transcribers-*
           merge-multiple: true
+      - name: Checksums
+        # Named transcribers-* so the release upload glob picks it up.
+        run: sha256sum transcribers-* > transcribers-checksums.txt
       - name: Publish "latest" release (overwrite assets)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -99,6 +107,9 @@ jobs:
     permissions:
       pages: write
       id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     concurrency:
       group: pages
       cancel-in-progress: true
@@ -112,4 +123,5 @@ jobs:
         with:
           path: packages/landing
       - name: Deploy to Pages
+        id: deployment
         uses: actions/deploy-pages@v5.0.1
