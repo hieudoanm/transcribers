@@ -9,6 +9,10 @@
 </p>
 
 <p align="center">
+  [![CI](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml?branch=master)  [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+</p>
+
+<p align="center">
   <img src="assets/branding/png/og.png" alt="transcribers — extract transcripts from video and audio files locally" width="720">
 </p>
 
