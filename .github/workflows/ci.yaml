@@ -15,31 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7.0.1
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt, clippy
-      - name: Cache cargo
-        uses: Swatinem/rust-cache@v2.9.3
-      - name: Ensure cmake
-        run: |
-          if ! command -v cmake >/dev/null; then
-            sudo apt-get update && sudo apt-get install -y cmake
-          fi
-      - name: Check formatting
-        run: cargo fmt --all -- --check
-      - name: Clippy
-        run: cargo clippy --workspace --all-targets -- -D warnings
-      - name: Test
-        run: cargo test --workspace
-
   cli-build:
-    needs: test
     name: CLI build (${{ matrix.os }})
     strategy:
       fail-fast: false
@@ -67,6 +43,15 @@ jobs:
           fi
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2.9.3
+      - name: Check formatting
+        if: matrix.os == 'ubuntu-latest'
+        run: cargo fmt --all -- --check
+      - name: Clippy
+        if: matrix.os == 'ubuntu-latest'
+        run: cargo clippy --workspace --all-targets -- -D warnings
+      - name: Test
+        if: matrix.os == 'ubuntu-latest'
+        run: cargo test --workspace
       - name: Build release
         run: cargo build --release --target ${{ matrix.target }}
       - name: Package binary

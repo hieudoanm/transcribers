@@ -10,7 +10,8 @@ unsafe extern "C" fn silence_log(
     _level: whisper_rs_sys::ggml_log_level,
     _text: *const i8,
     _user_data: *mut c_void,
-) {}
+) {
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Format {
