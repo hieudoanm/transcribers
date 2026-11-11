@@ -5,6 +5,7 @@ edition.workspace = true
 
 [dependencies]
 whisper-rs = "=0.16.0"
+whisper-rs-sys = "=0.15.0"
 
 [dev-dependencies]
 serde_json = "=1.0.154"
