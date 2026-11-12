@@ -8,6 +8,8 @@ Deployed to GitHub Pages as-is.
 
 ## Conventions
 
+- **Fonts:** Inter (sans) loaded via the Google Fonts `<link>` in `index.html`; mono stack `ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace`. Tokens: `--font-sans` / `--font-mono`. Do not add other typefaces.
+
 - Keep it dependency-free: edit `index.html`/`styles.css` directly.
 - Asset URLs are relative (`favicon.svg`, `og-image.png`, `styles.css`) so
   the page works under the `/transcribers/` Pages base path and from
