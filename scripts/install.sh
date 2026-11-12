@@ -28,7 +28,16 @@ case "$ARCH" in
   arm64 | aarch64) ARCH="aarch64" ;;
 esac
 
-BINARY_URL="https://github.com/${REPO}/releases/latest/download/transcribers-${OS}-${ARCH}"
+case "$OS" in
+  linux)  TRIPLE="${ARCH}-unknown-linux-gnu" ;;
+  darwin) TRIPLE="${ARCH}-apple-darwin" ;;
+  *)      TRIPLE="x86_64-pc-windows-msvc" ;;
+esac
+
+BINARY_URL="https://github.com/${REPO}/releases/latest/download/transcribers-${TRIPLE}"
+[[ "$OS" != "linux" && "$OS" != "darwin" ]] && BINARY_URL="${BINARY_URL}.exe"
+EXT=".exe"
+[[ "$OS" == "linux" || "$OS" == "darwin" ]] && EXT=""
 CHECKSUMS_URL="https://github.com/${REPO}/releases/latest/download/transcribers-checksums.txt"
 TMP_BIN="$(mktemp -t transcribers.XXXXXX)"
 TMP_SUMS="$(mktemp -t transcribers-sums.XXXXXX)"
@@ -40,11 +49,11 @@ if command -v curl >/dev/null 2>&1; then
     # Verify against the published checksums when they are available; an
     # absent file (older release) skips the check, a mismatch aborts.
     if curl -fsSL --connect-timeout 15 "$CHECKSUMS_URL" -o "$TMP_SUMS" 2>/dev/null; then
-      expected="$(awk -v f="transcribers-${OS}-${ARCH}" '$2 == f {print $1}' "$TMP_SUMS")"
+      expected="$(awk -v f="transcribers-${TRIPLE}${EXT}" '$2 == f {print $1}' "$TMP_SUMS")"
       if [ -n "$expected" ]; then
         actual="$(shasum -a 256 "$TMP_BIN" | awk '{print $1}')"
         if [ "$actual" != "$expected" ]; then
-          echo "error: checksum mismatch for transcribers-${OS}-${ARCH}" >&2
+          echo "error: checksum mismatch for transcribers-${TRIPLE}${EXT}" >&2
           echo "       expected $expected" >&2
           echo "       got      $actual" >&2
           exit 1

@@ -2,12 +2,18 @@
 
 [![CI](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml?branch=master)  [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+keywords: `transcription`, `whisper`, `rust`, `cli`, `ffmpeg`
+
 
 Video and audio to text, locally.
 
 <p align="center">
   <img src="assets/branding/png/og.png" alt="transcribers — extract transcripts from video and audio files locally" width="720">
 </p>
+
+**Live demo:** <https://hieudoanm.github.io/transcribers/>
+
+![transcribers demo](assets/demo/gif/demo.gif)
 
 - Extract transcripts from video and audio files with a single Rust binary.
 - Powered by `ffmpeg` for audio extraction and `whisper.cpp` for transcription.
