@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml?branch=master)  [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-keywords: `transcription`, `whisper`, `rust`, `cli`, `ffmpeg`
+Topics: `transcription`, `whisper`, `rust`, `cli`, `ffmpeg`
 
 
 Video and audio to text, locally.
