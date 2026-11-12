@@ -199,13 +199,16 @@ Delete filler badges, drop redundant labels…</code></pre>
 
   <footer class="footer">
     <div class="container footer-inner">
-      <span>© 2026 transcribers</span>
+      <span>© <span id="year">2026</span> transcribers</span>
       <span>ffmpeg + whisper.cpp, fully local</span>
-      <nav>
+      <nav aria-label="Footer">
         <a href="https://github.com/hieudoanm/transcribers" target="_blank" rel="noreferrer">GitHub</a>
         <a href="https://github.com/hieudoanm/transcribers#readme" target="_blank" rel="noreferrer">README</a>
       </nav>
     </div>
   </footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
