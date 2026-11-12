@@ -121,7 +121,7 @@ const HomePage: NextPage = () => (
         { value: '~1.6 MB', label: 'single binary' },
         { value: '0', label: 'cloud calls' },
       ]}>
-      <Terminal caption="SRT subtitles" lines={HERO_LINES} />
+      <Terminal lines={HERO_LINES} />
     </Hero>
 
     <Features
@@ -140,7 +140,6 @@ const HomePage: NextPage = () => (
           {DEMO_TERMINALS.map((t) => (
             <Terminal
               key={t.caption}
-              caption={t.caption}
               lines={t.lines}
               className={t.wide ? 'lg:col-span-2' : ''}
             />
@@ -155,7 +154,7 @@ const HomePage: NextPage = () => (
           title="Install in one command"
           description="Prebuilt binaries for macOS and Linux, or build from source with Cargo. Requires ffmpeg on PATH."
         />
-        <Terminal caption="Install" lines={INSTALL_LINES} />
+        <Terminal lines={INSTALL_LINES} />
         <p className="text-base-content/60 mt-6 text-center text-sm">
           Or from source:{' '}
           <code className="bg-base-300 rounded px-1.5 py-0.5 font-mono text-xs">
