@@ -1,16 +1,9 @@
-<p align="center">
-  <img src="assets/branding/png/logo.png" alt="transcribers logo" width="96">
-</p>
+# transcribers
 
-<h1 align="center">transcribers</h1>
+[![CI](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml?branch=master)  [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-<p align="center">
-  Video and audio to text, locally.
-</p>
 
-<p align="center">
-  [![CI](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml?branch=master)  [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-</p>
+Video and audio to text, locally.
 
 <p align="center">
   <img src="assets/branding/png/og.png" alt="transcribers — extract transcripts from video and audio files locally" width="720">
@@ -22,7 +15,7 @@
 - Runs fully offline; media never leaves your machine.
 - Outputs plain text, SRT, WebVTT subtitles, or JSON with timestamps.
 
-## Status
+## Features
 
 - Single static binary (~1.6 MB) with whisper.cpp linked in.
 - whisper models (`tiny` through `large-v3`, multilingual and `.en` variants) resolved by name.
@@ -32,7 +25,7 @@
 - Cargo workspace with focused crates: `ffmpeg`, `models`, `whisper`, `transcribers`.
 - CI builds, tests, publishes the `latest` GitHub release, and deploys the landing page.
 
-## Quick start
+## Get Started
 
 ```bash
 # install from a prebuilt release binary (falls back to source build)
@@ -90,7 +83,7 @@ generated output. Re-run the batch script with:
 - `curl` for model downloads
 - Building from source needs `cmake` and a C++ toolchain
 
-## Documentation map
+## Documentation
 
 | Document                                     | Purpose                                          |
 | -------------------------------------------- | ------------------------------------------------ |
@@ -103,3 +96,7 @@ generated output. Re-run the batch script with:
 
 The static landing page lives in [`packages/landing/`](packages/landing/) and
 is deployed to GitHub Pages by CI.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
