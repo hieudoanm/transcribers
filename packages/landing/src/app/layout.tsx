@@ -17,6 +17,7 @@ const NAV_LINKS = [
   { label: 'Features', href: '#features' },
   { label: 'Demo', href: '#demo' },
   { label: 'Install', href: '#install' },
+  { label: 'Docs', href: '/docs/' },
 ];
 
 const DESCRIPTION =
