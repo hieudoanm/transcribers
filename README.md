@@ -7,9 +7,7 @@ Topics: `transcription`, `whisper`, `rust`, `cli`, `ffmpeg`
 
 Video and audio to text, locally.
 
-<p align="center">
-  <img src="assets/branding/png/og.png" alt="transcribers — extract transcripts from video and audio files locally" width="720">
-</p>
+![transcribers — extract transcripts from video and audio files locally](assets/branding/png/og.png)
 
 **Live demo:** <https://hieudoanm.github.io/transcribers/>
 
