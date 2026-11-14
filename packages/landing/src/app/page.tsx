@@ -5,6 +5,7 @@ import Hero from '@/components/molecules/Hero';
 import SectionHead from '@/components/molecules/SectionHead';
 import Terminal from '@/components/molecules/Terminal';
 import {
+  LuBot,
   LuCaptions,
   LuDownload,
   LuFileText,
@@ -48,6 +49,11 @@ const FEATURES: Feature[] = [
     icon: LuCaptions,
     title: 'Subtitle-ready',
     body: 'SRT and WebVTT output with millisecond timestamps, ready for players and video editors.',
+  },
+  {
+    icon: LuBot,
+    title: 'MCP server',
+    body: 'transcribers mcp lets agents transcribe media and list models through the same local pipeline — no extra setup, no uploads.',
   },
 ];
 
