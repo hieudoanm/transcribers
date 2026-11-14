@@ -8,8 +8,11 @@ your machine.
 ## Sections
 
 - **Getting started** — install the binary and transcribe your first file.
-- **Guides** — command usage and local development.
+- **Guides** — command usage, local development, and the MCP server.
 
 ## Output formats
 
 Plain text, SRT, WebVTT subtitles, or JSON with timestamps.
+
+An MCP server (`transcribers mcp`) exposes transcription and model listing to
+MCP clients — see [MCP server](guides/mcp-server.md).
