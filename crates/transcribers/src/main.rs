@@ -1,3 +1,5 @@
+mod mcp;
+
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -180,6 +182,13 @@ fn default_threads() -> usize {
 }
 
 fn main() {
+    if std::env::args().nth(1).as_deref() == Some("mcp") {
+        if let Err(e) = mcp::run() {
+            eprintln!("mcp: {e}");
+            std::process::exit(1);
+        }
+        return;
+    }
     let args = match parse_args() {
         Ok(a) => a,
         Err(e) => {
