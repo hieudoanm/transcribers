@@ -24,14 +24,14 @@ transcribers/           Cargo workspace root
     └── whisper/        whisper-rs bindings, Format enum, segment rendering
 ```
 
-- `crates/ffmpeg` — owns the ffmpeg invocation (`-vn -ac 1 -ar 16000 -f wav`).
-- `crates/models` — resolves a model name to `~/.cache/transcribers/models/
+- `crates/transcribers-ffmpeg` — owns the ffmpeg invocation (`-vn -ac 1 -ar 16000 -f wav`).
+- `crates/transcribers-models` — resolves a model name to `~/.cache/transcribers/models/
   ggml-<name>.bin` (or `$TRANSCRIBERS_MODEL_DIR`), downloading from
   Hugging Face when missing. Existing paths are used as-is.
-- `crates/whisper` — owns the `Format` enum (`txt`/`srt`/`vtt`/`json`), WAV
+- `crates/transcribers-whisper` — owns the `Format` enum (`txt`/`srt`/`vtt`/`json`), WAV
   decoding to f32 samples, the `whisper-rs` transcription call, and renders
   segments to the output formats itself (no `whisper-cli` needed).
-- `crates/transcribers` — hand-rolled arg parsing (no clap), temp dir
+- `crates/transcribers-cli` — clap-based arg parsing, temp dir
   management, stdout vs `-o` file handling.
 
 ## Install scripts

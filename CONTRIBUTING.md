@@ -6,10 +6,10 @@ from video/audio files: ffmpeg extracts 16 kHz mono WAV, whisper.cpp
 
 ## Repository layout
 
-- `crates/transcribers` — CLI binary: args + orchestration.
-- `crates/ffmpeg` — audio extraction.
-- `crates/models` — model resolution/download.
-- `crates/whisper` — whisper.cpp bindings and segment rendering.
+- `crates/transcribers-cli` — CLI binary: clap args + orchestration.
+- `crates/transcribers-ffmpeg` — audio extraction.
+- `crates/transcribers-models` — model resolution/download.
+- `crates/transcribers-whisper` — whisper.cpp bindings and segment rendering.
 - `scripts/` — install helpers; `examples/` — sample videos and batch script.
 
 ## Setup
