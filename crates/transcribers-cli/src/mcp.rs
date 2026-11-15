@@ -64,7 +64,12 @@ fn build_args(name: &str, params: &Value) -> Option<Vec<String>> {
         "list_models" => Some(vec!["--list-models".to_string()]),
         "transcribe" => {
             let input = arg(params, "input")?;
-            let mut args = vec![input];
+            let flag = if input.starts_with("http://") || input.starts_with("https://") {
+                "--url"
+            } else {
+                "--file"
+            };
+            let mut args = vec![flag.to_string(), input];
             if let Some(v) = arg(params, "model") {
                 args.extend(["--model".to_string(), v]);
             }
@@ -107,7 +112,7 @@ fn tools_list() -> Value {
                 "inputSchema": {
                     "type": "object",
                     "properties": {
-                        "input": {"type": "string", "description": "Path to the video or audio file"},
+                        "input": {"type": "string", "description": "Path to the video or audio file, or an http(s) URL (YouTube, Instagram, ...)"},
                         "model": {"type": "string", "description": "Model name (tiny, base, small, medium, large, base.en, ...) or path to a .bin file. Default: base.en"},
                         "language": {"type": "string", "description": "Spoken language code or 'auto'. Default: auto"},
                         "format": {"type": "string", "description": "Output format: txt, srt, vtt, json. Default: srt"},

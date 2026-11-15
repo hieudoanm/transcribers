@@ -9,14 +9,21 @@ as `txt`/`srt`/`vtt`/`json`, optionally alongside a converted audio file
 ## CLI
 
 ```
-transcribers <input-file> [OPTIONS]
+transcribers (--file <PATH> | --url <URL>) [OPTIONS]
 transcribers mcp            # MCP server over stdio JSON-RPC
 ```
+
+`--file` takes a local media path; `--url` takes an `http(s)` URL
+(YouTube videos/shorts, Instagram reels, ...) downloaded via the `yt-dlp`
+crate first. The two are mutually exclusive and one is required (except
+with `--list-models`).
 
 Options (see `--help` for the authoritative list):
 
 | Flag | Default | Purpose |
 |------|---------|---------|
+| `--file` | — | Local video/audio file path |
+| `--url` | — | `http(s)` URL to download then transcribe |
 | `-m`, `--model` | `base.en` | Model name or path to a `.bin` file |
 | `--list-models` | — | List known model names and exit |
 | `-l`, `--language` | `auto` | Language code or `auto` detection |
@@ -33,12 +40,23 @@ Options (see `--help` for the authoritative list):
 | `-V`, `--version` | — | Version + build timestamp |
 | `-h`, `--help` | — | Help |
 
-Argument parsing uses `clap` (derive). Post-parse validation lives in
-`parse_args()`: threads ≥ 1, `--duration > 0`, `--audio-only` requires
-`--audio`; violations exit 2 with a clap-style error.
+Argument parsing uses `clap` (derive); `--file`/`--url` live in a
+non-required `ArgGroup` so `--list-models` needs no input. Post-parse
+validation lives in `parse_args()`: an input is required unless
+`--list-models`, `--url` must be `http(s)`, threads ≥ 1, `--duration > 0`,
+`--audio-only` requires `--audio`; violations exit 2 with a clap-style
+error.
 
 ## Pipeline (`real_main`)
 
+0. `--url` inputs are downloaded via the `yt-dlp`
+   crate (tokio runtime; `Libraries`/`Downloader` API). A `yt-dlp`
+   binary on PATH is used when present, else one is installed into
+   `~/.cache/transcribers/dlp`. If the crate cannot parse the site's
+   metadata (its JSON model is YouTube-centric — e.g. Instagram
+   thumbnails lack `preference`), it falls back to running the yt-dlp
+   binary directly (`-f bestaudio/best`, `%(title)` output template).
+   Files land in the work dir named after the video title.
 1. `ffmpeg::has_audio_stream` — `ffprobe` check; fails fast with
    `no audio stream found` (skipped when ffprobe is absent).
 2. Audio-only mode short-circuits here: `ffmpeg::convert_audio` → exit.
