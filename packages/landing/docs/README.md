@@ -15,4 +15,6 @@ your machine.
 Plain text, SRT, WebVTT subtitles, or JSON with timestamps.
 
 An MCP server (`transcribers mcp`) exposes transcription and model listing to
-MCP clients — see [MCP server](guides/mcp-server.md).
+MCP clients — see [MCP server](guides/mcp-server.md). An HTTP server
+(`transcribers serve`) accepts file uploads and URLs at `POST /transcribe` —
+see [Usage](guides/usage.md#http-server).

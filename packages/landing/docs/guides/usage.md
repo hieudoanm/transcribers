@@ -10,24 +10,24 @@ Exactly one of `--file` or `--url` is required (except for `--list-models`).
 
 ## Options
 
-| Option                    | Default   | Description                                                                                                                                    |
-| ------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--file <PATH>`           | —         | Local video/audio file (mp4, mkv, mov, wav, mp3, ...)                                                                                         |
-| `--url <URL>`             | —         | `http(s)` URL — YouTube videos/shorts, Instagram reels, etc. Downloaded via the `yt-dlp` crate first                                           |
-| `-m`, `--model <MODEL>`   | `base.en` | Model name or path to a `.bin` file                                         |
-| `--list-models`           | —         | List known model names and exit                                             |
-| `-l`, `--language <LANG>` | `auto`    | Spoken language code or `auto` for detection                                |
-| `-f`, `--format <FORMAT>` | `srt`     | Output format: `txt`, `srt`, `vtt`, `json`                                  |
-| `-t`, `--threads <N>`     | auto      | Decoder threads (defaults to available parallelism, capped at 8)            |
-| `--start <SEC>`           | `0`       | Start transcription at `SEC` seconds into the media                         |
-| `--duration <SEC>`        | end       | Transcribe at most `SEC` seconds                                            |
-| `--prompt <TEXT>`         | —         | Initial prompt to bias recognition (names, jargon, context)                 |
-| `--translate`             | off       | Translate speech into English                                               |
-| `-o`, `--output <PATH>`   | stdout    | Write output to `PATH` instead of stdout (`-` = stdout)                     |
-| `--keep-audio`            | off       | Keep the extracted 16 kHz WAV (copied next to output / cwd, path on stderr) |
-| `-a`, `--audio <FORMAT>`  | —         | Also write audio as `wav`, `mp3` or `m4a` (source sample rate kept)         |
-| `--audio-only`            | off       | Only convert audio; requires `--audio`, skips transcription                 |
-| `-h`, `--help`            | —         | Show help                                                                   |
+| Option                    | Default   | Description                                                                                          |
+| ------------------------- | --------- | ---------------------------------------------------------------------------------------------------- |
+| `--file <PATH>`           | —         | Local video/audio file (mp4, mkv, mov, wav, mp3, ...)                                                |
+| `--url <URL>`             | —         | `http(s)` URL — YouTube videos/shorts, Instagram reels, etc. Downloaded via the `yt-dlp` crate first |
+| `-m`, `--model <MODEL>`   | `base.en` | Model name or path to a `.bin` file                                                                  |
+| `--list-models`           | —         | List known model names and exit                                                                      |
+| `-l`, `--language <LANG>` | `auto`    | Spoken language code or `auto` for detection                                                         |
+| `-f`, `--format <FORMAT>` | `srt`     | Output format: `txt`, `srt`, `vtt`, `json`                                                           |
+| `-t`, `--threads <N>`     | auto      | Decoder threads (defaults to available parallelism, capped at 8)                                     |
+| `--start <SEC>`           | `0`       | Start transcription at `SEC` seconds into the media                                                  |
+| `--duration <SEC>`        | end       | Transcribe at most `SEC` seconds                                                                     |
+| `--prompt <TEXT>`         | —         | Initial prompt to bias recognition (names, jargon, context)                                          |
+| `--translate`             | off       | Translate speech into English                                                                        |
+| `-o`, `--output <PATH>`   | stdout    | Write output to `PATH` instead of stdout (`-` = stdout)                                              |
+| `--keep-audio`            | off       | Keep the extracted 16 kHz WAV (copied next to output / cwd, path on stderr)                          |
+| `-a`, `--audio <FORMAT>`  | —         | Also write audio as `wav`, `mp3` or `m4a` (source sample rate kept)                                  |
+| `--audio-only`            | off       | Only convert audio; requires `--audio`, skips transcription                                          |
+| `-h`, `--help`            | —         | Show help                                                                                            |
 
 ## Examples
 
@@ -154,6 +154,34 @@ stdout carries only the transcript when `-o` is not used.
 | `TRANSCRIBERS_MODEL_DIR` | Directory of `ggml-*.bin` files (overrides cache) |
 | `XDG_CACHE_HOME`         | Base for default model cache                      |
 | `INSTALL_DIR`            | Install target for the install scripts            |
+
+## HTTP server
+
+`transcribers serve [--host 127.0.0.1] [--port 8080]` exposes the same
+pipeline over HTTP:
+
+- `POST /transcribe` — `multipart/form-data` body. Provide **either** a
+  `file` field (media upload; filename extension is kept for tidiness) **or**
+  a `url` field (http(s) URL, downloaded via yt-dlp). Optional text fields:
+  `model`, `language`, `format` (`txt`/`srt`/`vtt`/`json`, default `srt`),
+  `threads`, `start`, `duration`, `prompt`, `translate` (`true`/`1`/`yes`/`on`).
+  Response `200` body is the rendered transcript (`application/json` for
+  `format=json`, `text/plain` otherwise); `400` for bad/missing input,
+  `500` for pipeline failures (`{"error": "..."}`).
+- `GET /` — Swagger UI (loads `swagger-ui-dist` from unpkg CDN;
+  spec at `/openapi.json` and `/openapi.yaml`, sources in
+  `crates/transcribers-cli/assets/`).
+- `GET /health` — `ok`.
+
+Each request runs in its own temp dir and on the blocking thread pool;
+models are loaded per request. The default bind is localhost only.
+
+```sh
+transcribers serve --port 8080
+curl -F "file=@video.mp4" -F "format=srt" http://127.0.0.1:8080/transcribe
+curl -F "url=https://www.youtube.com/watch?v=jNQXAC9IVRw" \
+     -F "language=en" http://127.0.0.1:8080/transcribe
+```
 
 ## MCP server
 
