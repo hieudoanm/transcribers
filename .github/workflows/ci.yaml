@@ -124,7 +124,7 @@ jobs:
         run: |
           gh release create latest dist/* \
             --title "transcribers (latest)" \
-            --notes-file README.md \
+            --notes-file RELEASE.md \
             --latest
 
   landing-build:
