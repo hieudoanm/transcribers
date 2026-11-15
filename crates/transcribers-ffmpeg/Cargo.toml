@@ -1,4 +1,7 @@
 [package]
-name = "ffmpeg"
+name = "transcribers-ffmpeg"
 version.workspace = true
 edition.workspace = true
+
+[lib]
+name = "ffmpeg"

@@ -1,7 +1,10 @@
 [package]
-name = "whisper"
+name = "transcribers-whisper"
 version.workspace = true
 edition.workspace = true
+
+[lib]
+name = "whisper"
 
 [dependencies]
 whisper-rs = "=0.16.0"
