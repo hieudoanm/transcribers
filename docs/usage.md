@@ -155,6 +155,34 @@ stdout carries only the transcript when `-o` is not used.
 | `XDG_CACHE_HOME`         | Base for default model cache                      |
 | `INSTALL_DIR`            | Install target for the install scripts            |
 
+## HTTP server
+
+`transcribers serve [--host 127.0.0.1] [--port 8080]` exposes the same
+pipeline over HTTP:
+
+- `POST /transcribe` — `multipart/form-data` body. Provide **either** a
+  `file` field (media upload; filename extension is kept for tidiness) **or**
+  a `url` field (http(s) URL, downloaded via yt-dlp). Optional text fields:
+  `model`, `language`, `format` (`txt`/`srt`/`vtt`/`json`, default `srt`),
+  `threads`, `start`, `duration`, `prompt`, `translate` (`true`/`1`/`yes`/`on`).
+  Response `200` body is the rendered transcript (`application/json` for
+  `format=json`, `text/plain` otherwise); `400` for bad/missing input,
+  `500` for pipeline failures (`{"error": "..."}`).
+- `GET /` — Swagger UI (loads `swagger-ui-dist` from unpkg CDN;
+  spec at `/openapi.json` and `/openapi.yaml`, sources in
+  `crates/transcribers-cli/assets/`).
+- `GET /health` — `ok`.
+
+Each request runs in its own temp dir and on the blocking thread pool;
+models are loaded per request. The default bind is localhost only.
+
+```sh
+transcribers serve --port 8080
+curl -F "file=@video.mp4" -F "format=srt" http://127.0.0.1:8080/transcribe
+curl -F "url=https://www.youtube.com/watch?v=jNQXAC9IVRw" \
+     -F "language=en" http://127.0.0.1:8080/transcribe
+```
+
 ## MCP server
 
 `transcribers mcp` starts an MCP server over stdio JSON-RPC

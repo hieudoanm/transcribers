@@ -11,6 +11,7 @@ as `txt`/`srt`/`vtt`/`json`, optionally alongside a converted audio file
 ```
 transcribers (--file <PATH> | --url <URL>) [OPTIONS]
 transcribers mcp            # MCP server over stdio JSON-RPC
+transcribers serve [--host H] [--port P]   # HTTP API (default 127.0.0.1:8080)
 ```
 
 `--file` takes a local media path; `--url` takes an `http(s)` URL
@@ -71,6 +72,24 @@ error.
 
 `build.rs` stamps `BUILD_TIME` (UTC, `YYYY.MM.DD.hh.mm.ss`) into the binary;
 `--version` prints `transcribers <version> (build <BUILD_TIME>)`.
+
+## Server (`serve.rs`)
+
+`transcribers serve` runs an axum HTTP server. `POST /transcribe` takes
+`multipart/form-data`: a `file` upload **or** a `url` field, plus optional
+`model`/`language`/`format`/`threads`/`start`/`duration`/`prompt`/
+`translate` text fields (all strings; parsed with the same rules as the
+CLI). The handler collects fields, validates cheaply (400 on bad input),
+then runs `download_media`/`transcribe_text` in `spawn_blocking` inside a
+per-request `transcribers-serve-<pid>-<n>` temp dir. Response is the
+rendered transcript (`application/json` for `format=json`). `GET /` serves
+Swagger UI (CDN-hosted `swagger-ui-dist`) backed by the checked-in spec in
+`assets/openapi.{yaml,json}` — also exposed at `/openapi.json` and
+`/openapi.yaml`. `GET /health` returns `ok`; `DefaultBodyLimit` is disabled
+since uploads stream to disk.
+
+`Job` + `transcribe_text` are the shared core used by both `real_main` and
+the server — keep them in sync with the CLI flags.
 
 ## MCP
 

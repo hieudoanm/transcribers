@@ -1,0 +1,236 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "transcribers API",
+    "version": "0.0.1",
+    "description": "Local transcription HTTP API. `POST /transcribe` accepts either an\nuploaded media `file` or a `url` (downloaded via yt-dlp), extracts the\naudio with ffmpeg, transcribes with whisper.cpp and returns the\nrendered transcript. Exactly one of `file` or `url` must be provided.\n"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8080",
+      "description": "Default bind address (`--host`/`--port`)"
+    }
+  ],
+  "paths": {
+    "/transcribe": {
+      "post": {
+        "summary": "Transcribe media",
+        "description": "Multipart form upload. Provide **either** `file` **or** `url`.\nOptional fields mirror the CLI flags; unknown fields are ignored.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Media file upload \u2014 any container ffmpeg can decode (mp4, mkv, mov, wav, mp3, ...)"
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "http(s) URL \u2014 YouTube videos/shorts, Instagram reels, etc. Downloaded via yt-dlp first"
+                  },
+                  "model": {
+                    "type": "string",
+                    "default": "base.en",
+                    "description": "Model name (tiny, base, small, medium, large, *.en, ...) or path to a .bin file"
+                  },
+                  "language": {
+                    "type": "string",
+                    "default": "auto",
+                    "description": "Spoken language code or `auto` for detection"
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": ["txt", "srt", "vtt", "json"],
+                    "default": "srt",
+                    "description": "Output format"
+                  },
+                  "threads": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Decoder threads (default auto, capped at 8)"
+                  },
+                  "start": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Start transcription at SEC seconds into the media"
+                  },
+                  "duration": {
+                    "type": "number",
+                    "exclusiveMinimum": false,
+                    "description": "Transcribe at most SEC seconds"
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "Initial prompt to bias recognition (names, jargon, context)"
+                  },
+                  "translate": {
+                    "type": "string",
+                    "enum": ["true", "1", "yes", "on"],
+                    "description": "Translate speech to English when set"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rendered transcript. Content type is `application/json` when `format=json`, otherwise `text/plain; charset=utf-8`.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transcript"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request \u2014 missing input, invalid `url`/`format`/`threads`/`start`/`duration`, or malformed multipart body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipeline failure \u2014 ffmpeg/ffprobe, model download, whisper, or yt-dlp errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "responses": {
+          "200": {
+            "description": "Server is up",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "ok"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "API documentation (Swagger UI)",
+        "responses": {
+          "200": {
+            "description": "Swagger UI HTML page",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/openapi.json": {
+      "get": {
+        "summary": "OpenAPI spec (JSON)",
+        "responses": {
+          "200": {
+            "description": "OpenAPI 3.0 document",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/openapi.yaml": {
+      "get": {
+        "summary": "OpenAPI spec (YAML)",
+        "responses": {
+          "200": {
+            "description": "OpenAPI 3.0 document",
+            "content": {
+              "application/yaml": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Human-readable error message"
+          }
+        },
+        "required": ["error"]
+      },
+      "Transcript": {
+        "type": "object",
+        "description": "JSON transcript (`format=json`)",
+        "properties": {
+          "language": {
+            "type": "string",
+            "nullable": true
+          },
+          "duration_ms": {
+            "type": "integer"
+          },
+          "segments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "type": "integer",
+                  "description": "Segment start offset in milliseconds"
+                },
+                "end": {
+                  "type": "integer",
+                  "description": "Segment end offset in milliseconds"
+                },
+                "text": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

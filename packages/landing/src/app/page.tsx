@@ -9,7 +9,10 @@ import {
   LuCaptions,
   LuDownload,
   LuFileText,
+  LuGlobe,
   LuLock,
+  LuMusic,
+  LuServer,
   LuZap,
 } from 'react-icons/lu';
 
@@ -51,14 +54,29 @@ const FEATURES: Feature[] = [
     body: 'SRT and WebVTT output with millisecond timestamps, ready for players and video editors.',
   },
   {
+    icon: LuGlobe,
+    title: 'URLs in, transcripts out',
+    body: 'Pass a YouTube video, Short or Instagram reel to --url — yt-dlp fetches it, then the same local pipeline runs.',
+  },
+  {
+    icon: LuMusic,
+    title: 'Audio extraction',
+    body: '--audio writes wav, mp3 or m4a next to the transcript; --audio-only converts without transcribing.',
+  },
+  {
     icon: LuBot,
     title: 'MCP server',
     body: 'transcribers mcp lets agents transcribe media and list models through the same local pipeline — no extra setup, no uploads.',
   },
+  {
+    icon: LuServer,
+    title: 'HTTP server',
+    body: 'transcribers serve exposes POST /transcribe — upload a file or send a URL, get the transcript back as JSON or subtitles.',
+  },
 ];
 
 const HERO_LINES = [
-  '$ transcribers talk.mp4 -f srt -o talk',
+  '$ transcribers --file talk.mp4 -f srt -o talk',
   'wrote talk.srt',
   '',
   '1',
@@ -69,49 +87,80 @@ const HERO_LINES = [
 const DEMO_TERMINALS: {
   caption: string;
   lines: string[];
-  wide?: boolean;
 }[] = [
   {
     caption: 'Transcribe to SRT',
-    wide: true,
     lines: [
-      '$ transcribers talk.mp4 -f srt -o talk',
+      '$ transcribers --file talk.mp4 -f srt -o talk',
       'wrote talk.srt',
       '',
-      '1',
-      '00:00:00,000 --> 00:00:05,200',
-      'Delete filler badges, drop redundant labels, un-etalize the',
-      'random word in your header.',
-      '',
-      '2',
-      '00:00:05,200 --> 00:00:12,640',
-      'Only use mono where necessary. Use a design system, show the',
-      'actual product, and large the main feature.',
-    ],
-  },
-  {
-    caption: 'SRT to stdout (default)',
-    lines: [
-      '$ transcribers talk.mp4',
       '1',
       '00:00:00,000 --> 00:00:05,200',
       'Delete filler badges, drop redundant labels…',
     ],
   },
   {
+    caption: 'From a URL',
+    lines: [
+      '$ transcribers --url "https://youtu.be/jNQXAC9IVRw"',
+      'downloading https://youtu.be/jNQXAC9IVRw ...',
+      'transcribing... 100%',
+      'wrote yt-jNQXAC9IVRw.srt',
+      ' ',
+      ' ',
+    ],
+  },
+  {
+    caption: 'Audio extraction',
+    lines: [
+      '$ transcribers --file talk.mp4 -f srt -o talk --audio m4a',
+      'wrote talk.srt',
+      'wrote talk.m4a',
+      ' ',
+      ' ',
+      ' ',
+    ],
+  },
+  {
+    caption: 'SRT to stdout (default)',
+    lines: [
+      '$ transcribers --file talk.mp4',
+      '1',
+      '00:00:00,000 --> 00:00:05,200',
+      'Delete filler badges, drop redundant labels…',
+      ' ',
+      ' ',
+    ],
+  },
+  {
     caption: 'Pick a model',
     lines: [
-      '$ transcribers talk.mp4 --model small',
+      '$ transcribers --file talk.mp4 --model small',
       'downloading model ggml-small.bin ...',
       'transcribing... 100%',
+      'wrote talk.srt',
+      ' ',
+      ' ',
+    ],
+  },
+  {
+    caption: 'HTTP server',
+    lines: [
+      '$ transcribers serve --port 8080',
+      'serving on http://127.0.0.1:8080',
+      '$ curl -F "file=@talk.mp4" http://127.0.0.1:8080/transcribe',
+      '1',
+      '00:00:00,000 --> 00:00:05,200',
+      'Delete filler badges, drop redundant labels…',
     ],
   },
 ];
 
+
 const INSTALL_LINES = [
-  '$ curl -fsSL https://raw.githubusercontent.com/hieudoanm/transcribers/main/scripts/install.sh | bash',
+  '$ curl -fsSL https://raw.githubusercontent.com/hieudoanm/transcribers/master/scripts/install.sh | bash',
   'Installed to /usr/local/bin/transcribers',
-  '$ transcribers talk.mp4 -f srt -o talk',
+  '$ transcribers --file talk.mp4 -f srt -o talk',
   'wrote talk.srt',
 ];
 
@@ -119,7 +168,7 @@ const HomePage: NextPage = () => (
   <main>
     <Hero
       title="Turn video and audio into text, offline."
-      description="One Rust binary extracts the audio track with ffmpeg and transcribes it with whisper.cpp — mp4, mkv, mov, wav, mp3 and more, with no cloud and no account."
+      description="One Rust binary extracts the audio track with ffmpeg and transcribes it with whisper.cpp — local files or YouTube/Instagram URLs, with no cloud and no account."
       primary={{ label: 'Get started', href: '#install' }}
       secondary={{ label: 'See it in action', href: '#demo' }}
       stats={[
@@ -140,21 +189,17 @@ const HomePage: NextPage = () => (
       <div className="mx-auto w-full max-w-6xl px-5">
         <SectionHead
           title="See it in action"
-          description="Real CLI output — SRT subtitles straight to stdout or a file."
+          description="Real CLI output — files, URLs, audio, models and the HTTP server."
         />
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {DEMO_TERMINALS.map((t) => (
-            <Terminal
-              key={t.caption}
-              lines={t.lines}
-              className={t.wide ? 'lg:col-span-2' : ''}
-            />
+            <Terminal key={t.caption} lines={t.lines} />
           ))}
         </div>
       </div>
     </section>
 
-    <section id="install" className="bg-base-200 py-20">
+    <section id="install" className="py-20">
       <div className="mx-auto w-full max-w-3xl px-5">
         <SectionHead
           title="Install in one command"

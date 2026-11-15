@@ -148,6 +148,20 @@ Re-run the batch script with:
 Diagnostics and progress (`transcribing... N%`, `wrote ...`) go to stderr;
 stdout carries only the transcript when writing to stdout.
 
+## HTTP server
+
+`transcribers serve [--host 127.0.0.1] [--port 8080]` starts a small HTTP
+API. `POST /transcribe` accepts `multipart/form-data` with a `file` upload
+or a `url` field (yt-dlp download), plus optional `model`, `language`,
+`format`, `threads`, `start`, `duration`, `prompt`, `translate` fields —
+the response body is the rendered transcript. `GET /health` returns `ok`.
+
+```bash
+transcribers serve --port 8080
+curl -F "file=@video.mp4" -F "format=srt" http://127.0.0.1:8080/transcribe
+curl -F "url=https://www.youtube.com/watch?v=jNQXAC9IVRw" http://127.0.0.1:8080/transcribe
+```
+
 ## MCP server
 
 `transcribers mcp` runs a minimal MCP server over stdio JSON-RPC

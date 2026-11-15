@@ -19,6 +19,12 @@ The `transcribers` binary crate (package `transcribers-cli`, bin `transcribers`)
   stdout stays clean for `-o -` transcript output.
 - `src/mcp.rs` must keep delegating to the `transcribers` binary — never
   reimplement transcription logic there.
+- `src/serve.rs` is the HTTP API (`transcribers serve`): axum, `POST
+  /transcribe` multipart (`file` or `url` + optional param fields). It
+  shares `Job`/`transcribe_text`/`download_media` with `real_main` — route
+  all transcription through those, never duplicate pipeline logic.
+  Transcription runs in `spawn_blocking`; each request gets its own
+  `transcribers-serve-*` temp dir.
 - `build.rs` provides `BUILD_TIME`; `--version` output format is
   `transcribers <ver> (build <ts>)` — do not break it (install scripts parse it).
 - Post-parse validation exits via `Cli::command().error(...)`; keep exit
