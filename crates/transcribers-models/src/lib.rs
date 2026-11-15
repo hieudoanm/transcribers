@@ -105,7 +105,9 @@ pub fn model_path(model: &str) -> Result<PathBuf, String> {
     Ok(dest)
 }
 
-fn cache_dir() -> PathBuf {
+/// Root cache directory: `$XDG_CACHE_HOME/transcribers` or
+/// `$HOME/.cache/transcribers` (`.` as last resort).
+pub fn cache_dir() -> PathBuf {
     if let Some(dir) = env::var_os("XDG_CACHE_HOME") {
         return PathBuf::from(dir).join("transcribers");
     }

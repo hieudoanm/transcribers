@@ -1,6 +1,6 @@
 # transcribers
 
-[![CI](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml?branch=master)  [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/hieudoanm/transcribers/actions/workflows/ci.yaml?branch=master)  [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
 
 Topics: `transcription`, `whisper`, `rust`, `cli`, `ffmpeg`
 
@@ -53,30 +53,37 @@ cargo test --workspace
 
 ```bash
 # srt transcript to stdout (default format)
-transcribers video.mp4
+transcribers --file video.mp4
 
 # subtitles file
-transcribers video.mp4 -f srt -o out/video
+transcribers --file video.mp4 -f srt -o out/video
 
 # other options
-transcribers video.mp4 --model small.en --language en --format vtt
-transcribers video.mp4 --format json --output transcript.json
+transcribers --file video.mp4 --model small.en --language en --format vtt
+transcribers --file video.mp4 --format json --output transcript.json
 
 # clip a section, bias recognition, translate
-transcribers video.mp4 --start 30 --duration 120 --prompt "Dr. Smith" --translate
+transcribers --file video.mp4 --start 30 --duration 120 --prompt "Dr. Smith" --translate
 
 # convert to audio only (no model download, no transcription)
-transcribers video.mp4 --audio-only --audio mp3        # -> video.mp3 in cwd
+transcribers --file video.mp4 --audio-only --audio mp3        # -> video.mp3 in cwd
 
 # transcript plus audio file next to the output
-transcribers video.mp4 -f srt -o out/video --audio m4a # -> out/video.srt + out/video.m4a
+transcribers --file video.mp4 -f srt -o out/video --audio m4a # -> out/video.srt + out/video.m4a
 
 # keep the intermediate 16 kHz WAV for inspection
-transcribers video.mp4 --keep-audio
+transcribers --file video.mp4 --keep-audio
+
+# download a YouTube video/short or Instagram reel, then transcribe
+transcribers --url "https://www.youtube.com/watch?v=jNQXAC9IVRw" -f srt -o out/video
 ```
 
 Options:
 
+- `--file <PATH>` — local video/audio file (mp4, mkv, mov, wav, mp3, ...).
+  Mutually exclusive with `--url`; one of the two is required.
+- `--url <URL>` — `http(s)` URL (YouTube videos/shorts, Instagram reels,
+  ...); media is downloaded via the `yt-dlp` crate first.
 - `-m`, `--model <MODEL>` — whisper model name (`tiny`, `base`, `small`,
   `medium`, `large`, `*.en`, ...) or path to a local `.bin` file.
   Default: `base.en`; missing models download automatically.
@@ -109,11 +116,12 @@ pass a path to a local `.bin` model file.
 
 ## Examples
 
-`examples/videos/` holds sample inputs and `examples/transcripts/` the
-generated output. Re-run the batch script with:
+`examples/videos/` holds sample inputs, `examples/urls.txt` sample URLs
+(YouTube, Instagram), and `examples/transcripts/` the generated output.
+Re-run the batch script with:
 
 ```bash
-./examples/examples.sh                  # FORMAT and MODEL env vars supported
+./examples/examples.sh                  # FORMAT/MODEL/AUDIO env vars supported
 ```
 
 ## Requirements
@@ -163,7 +171,8 @@ is deployed to GitHub Pages by CI.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [GNU GPL-3.0](LICENSE) — required by the
+`yt-dlp` crate used for URL downloads.
 
 [transcribers landing page]: https://hieudoanm.github.io/transcribers/
 [whisper.cpp on Hugging Face]: https://huggingface.co/ggerganov/whisper.cpp

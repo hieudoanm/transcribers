@@ -44,7 +44,9 @@ CLI depends on them via `package = "transcribers-*"`.
 ### Crate responsibilities
 
 - **transcribers-cli** — clap derive arg parsing (`Cli`), post-parse
-  validation (exit 2 via `Cli::command().error`), temp-dir lifecycle,
+  validation (exit 2 via `Cli::command().error`), yt-dlp URL downloads
+  (tokio runtime, auto-installs the yt-dlp binary into
+  `~/.cache/transcribers/dlp` when absent), temp-dir lifecycle,
   output destination rules, `mcp` subcommand, `--version` build stamp.
 - **transcribers-ffmpeg** — all ffmpeg/ffprobe invocations:
   `extract_audio_with` (16 kHz mono WAV, `WHISPER_ARGS`),

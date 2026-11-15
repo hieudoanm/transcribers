@@ -28,7 +28,9 @@ make build|test|clippy|fmt|run|install|clean
 ```
 
 Runtime dep on `PATH`: `ffmpeg` only (`ffprobe` optional but recommended;
-`brew install ffmpeg`). `curl` needed once per model download. Building
+`brew install ffmpeg`). URL inputs use the `yt-dlp` crate; a `yt-dlp`
+binary on PATH is preferred, otherwise one is auto-installed into
+`~/.cache/transcribers/dlp`. `curl` needed once per model download. Building
 from source needs `cmake` + a C++ toolchain (whisper.cpp compiles via
 cmake inside `whisper-rs-sys`).
 
@@ -38,6 +40,7 @@ Cargo workspace (`resolver = "2"`, `workspace.package.version = 0.0.1`):
 
 - `crates/transcribers-cli` — package `transcribers-cli`, binary
   `transcribers`. clap derive parsing (`Cli`), post-parse validation,
+  yt-dlp URL downloads (tokio runtime),
   temp-dir orchestration in `real_main`, `build.rs` stamps `BUILD_TIME`,
   `src/mcp.rs` is an MCP stdio JSON-RPC server that shells out to the CLI.
 - `crates/transcribers-ffmpeg` — lib name `ffmpeg`. `extract_audio*`
@@ -59,6 +62,11 @@ Cargo workspace (`resolver = "2"`, `workspace.package.version = 0.0.1`):
 - `docs/` — `usage.md` (CLI reference), `development.md` (build/layout).
 - `packages/landing/` — static GitHub Pages site (own AGENTS.md).
 - `assets/branding/{svg,png}` — logo/og art; `assets/svg-to-png.sh` converts.
+
+## License
+
+GPL-3.0-only — required by the `yt-dlp` crate dependency. Do not
+relicense or add copyleft-incompatible deps without discussing.
 
 ## Conventions
 

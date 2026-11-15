@@ -1,61 +1,62 @@
 # Usage
 
 ```sh
-transcribers <input-file> [OPTIONS]
+transcribers (--file <PATH> | --url <URL>) [OPTIONS]
 ```
 
 Extracts the audio track from a video/audio file and transcribes it with
 whisper.cpp (compiled into the binary). Requires `ffmpeg` on `PATH`.
-
-## Arguments
-
-| Argument       | Description                                        |
-| -------------- | -------------------------------------------------- |
-| `<input-file>` | Video or audio file (mp4, mkv, mov, wav, mp3, ...) |
+Exactly one of `--file` or `--url` is required (except for `--list-models`).
 
 ## Options
 
-| Option                    | Default   | Description                                                                 |
-| ------------------------- | --------- | --------------------------------------------------------------------------- |
-| `-m`, `--model <MODEL>`   | `base.en` | Model name or path to a `.bin` file                                         |
-| `--list-models`           | —         | List known model names and exit                                             |
-| `-l`, `--language <LANG>` | `auto`    | Spoken language code or `auto` for detection                                |
-| `-f`, `--format <FORMAT>` | `srt`     | Output format: `txt`, `srt`, `vtt`, `json`                                  |
-| `-t`, `--threads <N>`     | auto      | Decoder threads (defaults to available parallelism, capped at 8)            |
-| `--start <SEC>`           | `0`       | Start transcription at `SEC` seconds into the media                         |
-| `--duration <SEC>`        | end       | Transcribe at most `SEC` seconds                                            |
-| `--prompt <TEXT>`         | —         | Initial prompt to bias recognition (names, jargon, context)                 |
-| `--translate`             | off       | Translate speech into English                                               |
-| `-o`, `--output <PATH>`   | stdout    | Write output to `PATH` instead of stdout (`-` = stdout)                     |
-| `--keep-audio`            | off       | Keep the extracted 16 kHz WAV (copied next to output / cwd, path on stderr) |
-| `-a`, `--audio <FORMAT>`  | —         | Also write audio as `wav`, `mp3` or `m4a` (source sample rate kept)         |
-| `--audio-only`            | off       | Only convert audio; requires `--audio`, skips transcription                 |
-| `-h`, `--help`            | —         | Show help                                                                   |
+| Option                    | Default   | Description                                                                                          |
+| ------------------------- | --------- | ---------------------------------------------------------------------------------------------------- |
+| `--file <PATH>`           | —         | Local video/audio file (mp4, mkv, mov, wav, mp3, ...)                                                |
+| `--url <URL>`             | —         | `http(s)` URL — YouTube videos/shorts, Instagram reels, etc. Downloaded via the `yt-dlp` crate first |
+| `-m`, `--model <MODEL>`   | `base.en` | Model name or path to a `.bin` file                                                                  |
+| `--list-models`           | —         | List known model names and exit                                                                      |
+| `-l`, `--language <LANG>` | `auto`    | Spoken language code or `auto` for detection                                                         |
+| `-f`, `--format <FORMAT>` | `srt`     | Output format: `txt`, `srt`, `vtt`, `json`                                                           |
+| `-t`, `--threads <N>`     | auto      | Decoder threads (defaults to available parallelism, capped at 8)                                     |
+| `--start <SEC>`           | `0`       | Start transcription at `SEC` seconds into the media                                                  |
+| `--duration <SEC>`        | end       | Transcribe at most `SEC` seconds                                                                     |
+| `--prompt <TEXT>`         | —         | Initial prompt to bias recognition (names, jargon, context)                                          |
+| `--translate`             | off       | Translate speech into English                                                                        |
+| `-o`, `--output <PATH>`   | stdout    | Write output to `PATH` instead of stdout (`-` = stdout)                                              |
+| `--keep-audio`            | off       | Keep the extracted 16 kHz WAV (copied next to output / cwd, path on stderr)                          |
+| `-a`, `--audio <FORMAT>`  | —         | Also write audio as `wav`, `mp3` or `m4a` (source sample rate kept)                                  |
+| `--audio-only`            | off       | Only convert audio; requires `--audio`, skips transcription                                          |
+| `-h`, `--help`            | —         | Show help                                                                                            |
 
 ## Examples
 
 ```sh
 # srt transcript to stdout (default)
-transcribers video.mp4
+transcribers --file video.mp4
 
 # write a subtitles file next to nothing in particular
-transcribers video.mp4 -f srt -o out/video
+transcribers --file video.mp4 -f srt -o out/video
 # -> writes out/video.srt
 
 # keep the extracted 16 kHz mono WAV for inspection
-transcribers video.mp4 --keep-audio
+transcribers --file video.mp4 --keep-audio
 
 # extract audio only (no transcription, no model download)
-transcribers video.mp4 --audio-only --audio mp3
+transcribers --file video.mp4 --audio-only --audio mp3
 
 # transcript + audio file next to the output
-transcribers video.mp4 -f srt -o out/video --audio m4a   # -> out/video.srt + out/video.m4a
+transcribers --file video.mp4 -f srt -o out/video --audio m4a   # -> out/video.srt + out/video.m4a
 
 # force English with a bigger model
-transcribers video.mp4 --model small.en --language en
+transcribers --file video.mp4 --model small.en --language en
 
 # transcribe only a clip, with a prompt hint
-transcribers video.mp4 --start 30 --duration 120 --prompt "Dr. Smith"
+transcribers --file video.mp4 --start 30 --duration 120 --prompt "Dr. Smith"
+
+# transcribe a YouTube video or Instagram reel straight from a URL
+transcribers --url "https://www.youtube.com/watch?v=jNQXAC9IVRw" -f srt -o out/video
+transcribers --url "https://www.instagram.com/reel/XXXX/" --audio-only --audio mp3
 
 # list the model names accepted by --model
 transcribers --list-models
@@ -98,11 +99,13 @@ Pass a full path to any local `.bin` file to use a custom or quantized model.
 
 ## Batch transcription
 
-`examples/examples.sh` transcribes everything in `examples/videos/` into
-`examples/transcripts/`:
+`examples/examples.sh` transcribes everything in `examples/videos/` plus any
+URLs listed in `examples/urls.txt` (one per line, `#` comments) into
+`examples/transcripts/`. Pass arguments for an explicit input list instead:
 
 ```sh
-./examples/examples.sh                          # srt transcripts
+./examples/examples.sh                                    # videos + urls.txt
+./examples/examples.sh clip.mp4 "https://…"  # explicit inputs
 FORMAT=json MODEL=small.en ./examples/examples.sh
 AUDIO=mp3 ./examples/examples.sh                # + audio -> examples/audio/
 AUDIO_ONLY=1 AUDIO=wav ./examples/examples.sh   # audio conversion only
@@ -110,6 +113,10 @@ AUDIO_ONLY=1 AUDIO=wav ./examples/examples.sh   # audio conversion only
 
 ## Pipeline
 
+0. `--url` inputs are downloaded first via the `yt-dlp` crate (best audio
+   stream into the per-PID temp dir, named after the video title). A
+   `yt-dlp` binary on `PATH` is used when present; otherwise one is
+   installed into `~/.cache/transcribers/dlp`.
 1. `ffprobe` checks the input has an audio stream; files without one fail
    fast with `no audio stream found` (skipped when ffprobe is absent or
    cannot parse the file — ffmpeg then reports the real error).
