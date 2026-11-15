@@ -33,9 +33,9 @@ the CLI.
 
 | Tool            | Description                                                          |
 | --------------- | -------------------------------------------------------------------- |
-| `transcribe`    | Transcribe a video/audio file to txt, srt, vtt, or json              |
+| `transcribe`    | Transcribe a video/audio file or URL to txt, srt, vtt, or json              |
 | `list_models`   | List known whisper model names                                       |
 
-`transcribe` accepts `input` (required) plus optional `model`, `language`,
+`transcribe` accepts `input` (required — a file path or an http(s) URL) plus optional `model`, `language`,
 `format`, `output`, `threads`, `start`, `duration`, `prompt`, and `translate`
 — the same options as the command line. See [Usage](usage.md) for details.

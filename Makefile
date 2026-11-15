@@ -1,4 +1,4 @@
-.PHONY: build test clippy fmt run clean
+.PHONY: build test clippy fmt run serve clean
 
 build:
 	cargo build --release
@@ -20,6 +20,9 @@ install:
 
 run:
 	cargo run --release -- $(ARGS)
+
+serve:
+	cargo run --release -- serve $(ARGS)
 
 clean:
 	cargo clean

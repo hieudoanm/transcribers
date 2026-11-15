@@ -1,4 +1,5 @@
 mod mcp;
+mod serve;
 
 use std::env;
 use std::fs;
@@ -85,7 +86,7 @@ struct Cli {
     audio_only: bool,
 }
 
-fn parse_seconds(v: &str) -> Result<f64, String> {
+pub(crate) fn parse_seconds(v: &str) -> Result<f64, String> {
     let s: f64 = v
         .parse()
         .map_err(|_| format!("'{v}' is not a number of seconds (e.g. 12.5)"))?;
@@ -140,19 +141,29 @@ fn parse_args() -> Cli {
     cli
 }
 
-fn default_threads() -> usize {
+pub(crate) fn default_threads() -> usize {
     std::thread::available_parallelism()
         .map(|n| n.get().min(8))
         .unwrap_or(4)
 }
 
 fn main() {
-    if std::env::args().nth(1).as_deref() == Some("mcp") {
-        if let Err(e) = mcp::run() {
-            eprintln!("mcp: {e}");
-            std::process::exit(1);
+    match std::env::args().nth(1).as_deref() {
+        Some("mcp") => {
+            if let Err(e) = mcp::run() {
+                eprintln!("mcp: {e}");
+                std::process::exit(1);
+            }
+            return;
         }
-        return;
+        Some("serve") => {
+            if let Err(e) = serve::run() {
+                eprintln!("serve: {e}");
+                std::process::exit(1);
+            }
+            return;
+        }
+        _ => {}
     }
     let args = parse_args();
     if args.list_models {
@@ -187,14 +198,6 @@ fn real_main(args: &Cli) -> Result<(), String> {
     };
     let input = media.as_path();
 
-    // Fail fast on files with no audio stream (skipped when ffprobe is absent
-    // or cannot parse the file — ffmpeg reports those itself).
-    if let Some(has_audio) = ffmpeg::has_audio_stream(input)? {
-        if !has_audio {
-            return Err(format!("{}: no audio stream found", input.display()));
-        }
-    }
-
     let extract = ffmpeg::ExtractOptions {
         start_s: args.start,
         duration_s: args.duration,
@@ -202,6 +205,13 @@ fn real_main(args: &Cli) -> Result<(), String> {
 
     // Audio-only mode: convert and exit before touching models/whisper.
     if args.audio_only {
+        // Fail fast on files with no audio stream (skipped when ffprobe is
+        // absent or cannot parse the file — ffmpeg reports those itself).
+        if let Some(has_audio) = ffmpeg::has_audio_stream(input)? {
+            if !has_audio {
+                return Err(format!("{}: no audio stream found", input.display()));
+            }
+        }
         let result = audio_dest(args, input).and_then(|dest| {
             ffmpeg::convert_audio(input, &dest, args.audio.unwrap(), &extract)?;
             Ok(dest)
@@ -215,27 +225,18 @@ fn real_main(args: &Cli) -> Result<(), String> {
             Err(e) => Err(e),
         }
     } else {
-        // Cheap checks first: a bad language code must not trigger a model download.
-        whisper::validate_language(&args.language)?;
-        let model = models::model_path(&args.model)?;
-
-        let wav = work.join("audio.wav");
-
-        let topts = TranscribeOptions {
+        let job = Job {
+            model: args.model.clone(),
+            language: args.language.clone(),
+            format: args.format,
             threads: args.threads.unwrap_or_else(default_threads),
-            initial_prompt: args.prompt.clone(),
+            start: args.start,
+            duration: args.duration,
+            prompt: args.prompt.clone(),
             translate: args.translate,
         };
 
-        let result = (|| -> Result<(String, PathBuf), String> {
-            ffmpeg::extract_audio_with(input, &wav, &extract)?;
-            let transcript = whisper::transcribe(&wav, &model, &args.language, &topts)?;
-            if transcript.segments.is_empty() {
-                eprintln!("warning: no speech detected");
-            }
-            Ok((whisper::render(args.format, &transcript), wav.clone()))
-        })();
-
+        let result = transcribe_text(input, &work, &job);
         let (text, wav) = match result {
             Ok(t) => t,
             Err(e) => {
@@ -279,6 +280,61 @@ fn real_main(args: &Cli) -> Result<(), String> {
         let _ = fs::remove_dir_all(&work);
         Ok(())
     }
+}
+
+/// Transcription parameters shared by the CLI and the HTTP server.
+pub(crate) struct Job {
+    pub model: String,
+    pub language: String,
+    pub format: Format,
+    pub threads: usize,
+    pub start: Option<f64>,
+    pub duration: Option<f64>,
+    pub prompt: Option<String>,
+    pub translate: bool,
+}
+
+/// Full transcription pipeline for a local media file: ffprobe audio-stream
+/// check → language/model validation (cheap checks before any model
+/// download) → 16 kHz WAV extraction into `work` → whisper → rendered text.
+/// Returns `(rendered_text, wav_path)`.
+pub(crate) fn transcribe_text(
+    input: &Path,
+    work: &Path,
+    job: &Job,
+) -> Result<(String, PathBuf), String> {
+    // Fail fast on files with no audio stream (skipped when ffprobe is
+    // absent or cannot parse the file — ffmpeg reports those itself).
+    if let Some(has_audio) = ffmpeg::has_audio_stream(input)? {
+        if !has_audio {
+            return Err(format!("{}: no audio stream found", input.display()));
+        }
+    }
+
+    // Cheap checks first: a bad language code must not trigger a model download.
+    whisper::validate_language(&job.language)?;
+    let model = models::model_path(&job.model)?;
+
+    let wav = work.join("audio.wav");
+    let extract = ffmpeg::ExtractOptions {
+        start_s: job.start,
+        duration_s: job.duration,
+    };
+    ffmpeg::extract_audio_with(input, &wav, &extract)?;
+    let transcript = whisper::transcribe(
+        &wav,
+        &model,
+        &job.language,
+        &TranscribeOptions {
+            threads: job.threads,
+            initial_prompt: job.prompt.clone(),
+            translate: job.translate,
+        },
+    )?;
+    if transcript.segments.is_empty() {
+        eprintln!("warning: no speech detected");
+    }
+    Ok((whisper::render(job.format, &transcript), wav))
 }
 
 /// Resolves where `--audio` output goes: next to `-o` (same stem, audio
@@ -347,7 +403,7 @@ fn keep_audio_copy(wav: &Path, input: &Path) -> Result<PathBuf, String> {
     Err("could not find a free filename for kept audio".to_string())
 }
 
-fn is_url(s: &str) -> bool {
+pub(crate) fn is_url(s: &str) -> bool {
     s.starts_with("http://") || s.starts_with("https://")
 }
 
@@ -355,7 +411,7 @@ fn is_url(s: &str) -> bool {
 /// the `yt-dlp` crate (native extractors + yt-dlp binary fallback) and
 /// returns the local path. The file is named after the video title so
 /// downstream naming (`--keep-audio`, `--audio`) stays sensible.
-fn download_media(url: &str, work: &Path) -> Result<PathBuf, String> {
+pub(crate) fn download_media(url: &str, work: &Path) -> Result<PathBuf, String> {
     eprintln!("downloading {url} ...");
     let rt =
         tokio::runtime::Runtime::new().map_err(|e| format!("cannot start async runtime: {e}"))?;
