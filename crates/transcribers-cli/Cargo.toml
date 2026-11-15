@@ -1,0 +1,15 @@
+[package]
+name = "transcribers-cli"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "transcribers"
+path = "src/main.rs"
+
+[dependencies]
+ffmpeg = { path = "../transcribers-ffmpeg", package = "transcribers-ffmpeg" }
+models = { path = "../transcribers-models", package = "transcribers-models" }
+whisper = { path = "../transcribers-whisper", package = "transcribers-whisper" }
+serde_json = "=1.0.154"
+clap = { version = "=4.5.61", features = ["derive"] }
