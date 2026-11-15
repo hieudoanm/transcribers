@@ -1,0 +1,20 @@
+# transcribers
+
+> Extract transcripts from video and audio files with a single Rust binary. ffmpeg + whisper.cpp, fully local.
+
+- Repository: https://github.com/hieudoanm/transcribers
+- Site: https://hieudoanm.github.io/transcribers/
+
+## Documentation
+
+### getting-started
+
+- [Installation](https://hieudoanm.github.io/transcribers/docs/getting-started/installation/)
+### guides
+
+- [Development](https://hieudoanm.github.io/transcribers/docs/guides/development/)
+- [MCP server](https://hieudoanm.github.io/transcribers/docs/guides/mcp-server/)
+- [Usage](https://hieudoanm.github.io/transcribers/docs/guides/usage/)
+### overview
+
+- [transcribers documentation](https://hieudoanm.github.io/transcribers/docs/)

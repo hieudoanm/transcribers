@@ -30,6 +30,18 @@ export const metadata: Metadata = {
     template: '%s — transcribers',
   },
   description: DESCRIPTION,
+  keywords: [
+    'transcription',
+    'speech to text',
+    'Whisper',
+    'audio to text',
+    'video to text',
+    'local transcription',
+    'Rust',
+    'MCP server',
+  ],
+  authors: [{ name: 'hieudoan', url: 'https://github.com/hieudoanm/transcribers' }],
+  category: 'software',
   openGraph: {
     siteName: 'transcribers',
     type: 'website',
@@ -47,6 +59,28 @@ export const metadata: Metadata = {
   },
 };
 
+
+const JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: 'transcribers',
+      url: 'https://hieudoanm.github.io/transcribers/',
+      description: 'Extract transcripts from video and audio files with a single Rust binary. ffmpeg + whisper.cpp, fully local.',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      name: 'transcribers',
+      applicationCategory: 'MultimediaApplication',
+      description: 'Extract transcripts from video and audio files with a single Rust binary. ffmpeg + whisper.cpp, fully local.',
+      url: 'https://hieudoanm.github.io/transcribers/',
+      codeRepository: 'https://github.com/hieudoanm/transcribers',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    },
+  ]
+};
+
 interface RootLayoutProps {
   children: ReactNode;
 }
@@ -57,6 +91,10 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => (
     data-theme="transcribers"
     className={`scroll-smooth antialiased motion-reduce:scroll-auto ${inter.className}`}>
     <body className="bg-base-100 text-base-content m-0 leading-relaxed">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
       <Navbar
         name="transcribers"
         logoSrc={LOGO}
