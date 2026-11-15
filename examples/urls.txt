@@ -1,0 +1,5 @@
+# URL inputs for examples.sh — one per line, '#' comments.
+# Downloaded via the yt-dlp crate before transcription.
+https://www.youtube.com/watch?v=jNQXAC9IVRw
+https://www.youtube.com/shorts/HuznAYzDcGw
+https://www.instagram.com/reels/DeQ5usbgpmE
