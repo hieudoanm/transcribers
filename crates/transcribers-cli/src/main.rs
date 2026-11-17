@@ -1,4 +1,5 @@
 mod mcp;
+mod mcp_http;
 mod serve;
 
 use std::env;
@@ -150,7 +151,28 @@ pub(crate) fn default_threads() -> usize {
 fn main() {
     match std::env::args().nth(1).as_deref() {
         Some("mcp") => {
-            if let Err(e) = mcp::run() {
+            let mut http = None;
+            let mut token = None;
+            let mut args = std::env::args().skip(2);
+            while let Some(arg) = args.next() {
+                if arg == "--http" {
+                    http = args.next();
+                } else if let Some(value) = arg.strip_prefix("--http=") {
+                    http = Some(value.to_string());
+                } else if arg == "--token" {
+                    token = args.next();
+                } else if let Some(value) = arg.strip_prefix("--token=") {
+                    token = Some(value.to_string());
+                }
+            }
+            let result = match http {
+                Some(addr) => mcp::run_http(
+                    &addr,
+                    token.or_else(|| std::env::var("MCP_AUTH_TOKEN").ok()),
+                ),
+                None => mcp::run(),
+            };
+            if let Err(e) = result {
                 eprintln!("mcp: {e}");
                 std::process::exit(1);
             }
