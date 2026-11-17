@@ -103,12 +103,22 @@ fn build_args(name: &str, params: &Value) -> Option<Vec<String>> {
     }
 }
 
+fn annotations(read_only: bool, destructive: bool, idempotent: bool, open_world: bool) -> Value {
+    json!({
+        "readOnlyHint": read_only,
+        "destructiveHint": destructive,
+        "idempotentHint": idempotent,
+        "openWorldHint": open_world
+    })
+}
+
 fn tools_list() -> Value {
     json!({
         "tools": [
             {
                 "name": "transcribe",
                 "description": "Transcribe a video or audio file to text (txt, srt, vtt or json)",
+                "annotations": annotations(false, false, true, true),
                 "inputSchema": {
                     "type": "object",
                     "properties": {
@@ -130,6 +140,7 @@ fn tools_list() -> Value {
             {
                 "name": "list_models",
                 "description": "List known whisper model names",
+                "annotations": annotations(true, false, true, false),
                 "inputSchema": {
                     "type": "object",
                     "properties": {},
@@ -213,4 +224,61 @@ pub fn run() -> std::io::Result<()> {
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn tools_list_declares_all_tools_with_four_hints() {
+        let list = tools_list();
+        let tools = list["tools"].as_array().expect("tools array");
+        let mut names: Vec<&str> = tools
+            .iter()
+            .map(|tool| tool["name"].as_str().expect("tool name"))
+            .collect();
+        names.sort_unstable();
+        assert_eq!(names, ["list_models", "transcribe"]);
+        for tool in tools {
+            let name = tool["name"].as_str().expect("tool name");
+            let hints = &tool["annotations"];
+            for hint in [
+                "readOnlyHint",
+                "destructiveHint",
+                "idempotentHint",
+                "openWorldHint",
+            ] {
+                assert!(
+                    hints.get(hint).is_some_and(Value::is_boolean),
+                    "{name} missing boolean annotation {hint}: {hints}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn transcribe_reaches_the_open_world() {
+        let tools = tools_list()["tools"].clone();
+        let transcribe = tools
+            .as_array()
+            .expect("tools array")
+            .iter()
+            .find(|tool| tool["name"] == "transcribe")
+            .expect("transcribe tool");
+        // URL inputs are fetched and missing models are downloaded.
+        assert_eq!(transcribe["annotations"]["openWorldHint"], json!(true));
+        assert_eq!(transcribe["annotations"]["readOnlyHint"], json!(false));
+        assert_eq!(transcribe["annotations"]["destructiveHint"], json!(false));
+        assert_eq!(transcribe["annotations"]["idempotentHint"], json!(true));
+
+        let list_models = tools
+            .as_array()
+            .expect("tools array")
+            .iter()
+            .find(|tool| tool["name"] == "list_models")
+            .expect("list_models tool");
+        assert_eq!(list_models["annotations"]["readOnlyHint"], json!(true));
+        assert_eq!(list_models["annotations"]["openWorldHint"], json!(false));
+    }
 }
