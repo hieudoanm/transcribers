@@ -83,6 +83,8 @@ jobs:
           vsdir="$(cygpath -u "$vsdir")"
           ml64="$(find "$vsdir/VC/Tools/MSVC" -name ml64.exe -path '*Hostx64/x64*' | sort -V | tail -1)"
           if [ -z "$ml64" ]; then echo "ml64.exe not found under $vsdir"; exit 1; fi
+          # CMake is a Windows binary: it needs a Windows path, not /c/...
+          ml64="$(cygpath -m "$ml64")"
           echo "Using ASM compiler: $ml64"
           echo "CMAKE_ASM_COMPILER=$ml64" >> "$GITHUB_ENV"
           echo "CMAKE_ASM_MASM_COMPILER=$ml64" >> "$GITHUB_ENV"
