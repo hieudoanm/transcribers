@@ -15,8 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  cli-check:
-    name: CLI check
+  cli-quality:
+    name: CLI - Quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,11 +39,11 @@ jobs:
         run: cargo test --workspace
 
   cli-build:
-    name: CLI build (${{ matrix.os }})
+    name: CLI - Build (${{ matrix.os }})
     # Release binaries are only needed for the master-branch release job;
-    # PRs are covered by the `cli-check` job.
+    # PRs are covered by the `cli-quality` job.
     if: github.event_name != 'pull_request'
-    needs: cli-check
+    needs: cli-quality
     strategy:
       fail-fast: false
       matrix:
@@ -70,6 +70,22 @@ jobs:
           fi
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2.9.3
+      - name: Locate MASM assembler
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        run: |
+          # windows-latest ships VS 18 with multiple MSVC toolsets; CMake's
+          # ASM detection can resolve a stale cl.exe path. Point it at the
+          # newest real ml64.exe instead. whisper-rs-sys forwards CMAKE_*
+          # env vars to cmake as -D defines.
+          vswhere="/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe"
+          vsdir="$("$vswhere" -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath)"
+          vsdir="$(cygpath -u "$vsdir")"
+          ml64="$(find "$vsdir/VC/Tools/MSVC" -name ml64.exe -path '*Hostx64/x64*' | sort -V | tail -1)"
+          if [ -z "$ml64" ]; then echo "ml64.exe not found under $vsdir"; exit 1; fi
+          echo "Using ASM compiler: $ml64"
+          echo "CMAKE_ASM_COMPILER=$ml64" >> "$GITHUB_ENV"
+          echo "CMAKE_ASM_MASM_COMPILER=$ml64" >> "$GITHUB_ENV"
       - name: Build release
         run: cargo build --release --target ${{ matrix.target }}
       - name: Package binary
