@@ -3379,9 +3379,33 @@
       "language": "rust"
     },
     {
+      "id": "external:rust:axum::extract::multipart.Field",
+      "kind": "external_symbol",
+      "name": "Field",
+      "language": "rust"
+    },
+    {
       "id": "external:rust:axum::serve.map_err",
       "kind": "external_symbol",
       "name": "map_err",
+      "language": "rust"
+    },
+    {
+      "id": "external:rust:external:unresolved:whisper_rs::SamplingStrategy.Greedy",
+      "kind": "external_symbol",
+      "name": "Greedy",
+      "language": "rust"
+    },
+    {
+      "id": "external:rust:ffmpeg.AudioFormat",
+      "kind": "external_symbol",
+      "name": "AudioFormat",
+      "language": "rust"
+    },
+    {
+      "id": "external:rust:ffmpeg.ExtractOptions",
+      "kind": "external_symbol",
+      "name": "ExtractOptions",
       "language": "rust"
     },
     {
@@ -3430,6 +3454,12 @@
       "id": "external:rust:parts.next.unwrap_or",
       "kind": "external_symbol",
       "name": "unwrap_or",
+      "language": "rust"
+    },
+    {
+      "id": "external:rust:serde_json.Value",
+      "kind": "external_symbol",
+      "name": "Value",
       "language": "rust"
     },
     {
@@ -3538,12 +3568,6 @@
       "id": "external:rust:std::Some",
       "kind": "external_symbol",
       "name": "Some",
-      "language": "rust"
-    },
-    {
-      "id": "external:rust:std::TcpStream",
-      "kind": "external_symbol",
-      "name": "TcpStream",
       "language": "rust"
     },
     {
@@ -3916,6 +3940,12 @@
       "id": "external:rust:std::min",
       "kind": "external_symbol",
       "name": "min",
+      "language": "rust"
+    },
+    {
+      "id": "external:rust:std::net.TcpStream",
+      "kind": "external_symbol",
+      "name": "TcpStream",
       "language": "rust"
     },
     {
@@ -12096,36 +12126,6 @@
       "exported": false
     },
     {
-      "id": "unresolved:rust:AudioFormat",
-      "kind": "unknown",
-      "name": "AudioFormat",
-      "language": "rust"
-    },
-    {
-      "id": "unresolved:rust:ExtractOptions",
-      "kind": "unknown",
-      "name": "ExtractOptions",
-      "language": "rust"
-    },
-    {
-      "id": "unresolved:rust:Field",
-      "kind": "unknown",
-      "name": "Field",
-      "language": "rust"
-    },
-    {
-      "id": "unresolved:rust:Greedy",
-      "kind": "unknown",
-      "name": "Greedy",
-      "language": "rust"
-    },
-    {
-      "id": "unresolved:rust:Value",
-      "kind": "unknown",
-      "name": "Value",
-      "language": "rust"
-    },
-    {
       "id": "unresolved:rust:arg",
       "kind": "unknown",
       "name": "arg",
@@ -12387,12 +12387,6 @@
       "id": "unresolved:rust:full_lang_id_from_state",
       "kind": "unknown",
       "name": "full_lang_id_from_state",
-      "language": "rust"
-    },
-    {
-      "id": "unresolved:rust:ggml_log_level",
-      "kind": "unknown",
-      "name": "ggml_log_level",
       "language": "rust"
     },
     {
@@ -12789,6 +12783,12 @@
       "id": "unresolved:rust:var_os",
       "kind": "unknown",
       "name": "var_os",
+      "language": "rust"
+    },
+    {
+      "id": "unresolved:rust:whisper_rs_sys::ggml_log_level",
+      "kind": "unknown",
+      "name": "whisper_rs_sys::ggml_log_level",
       "language": "rust"
     },
     {
@@ -31345,6 +31345,27 @@
     },
     {
       "source": "function:crates/transcribers-cli/src/main.rs::real_main",
+      "target": "method:crates/transcribers-whisper/src/lib.rs::Format.extension",
+      "kind": "calls",
+      "status": "resolved_internal",
+      "origin": "lexical",
+      "sites": [
+        {
+          "start": {
+            "line": 275,
+            "column": 41,
+            "byte": 8771
+          },
+          "end": {
+            "line": 275,
+            "column": 64,
+            "byte": 8794
+          }
+        }
+      ]
+    },
+    {
+      "source": "function:crates/transcribers-cli/src/main.rs::real_main",
       "target": "struct:crates/transcribers-cli/src/main.rs::Job",
       "kind": "calls",
       "status": "resolved_internal",
@@ -31456,18 +31477,6 @@
             "line": 272,
             "column": 47,
             "byte": 8660
-          }
-        },
-        {
-          "start": {
-            "line": 275,
-            "column": 41,
-            "byte": 8771
-          },
-          "end": {
-            "line": 275,
-            "column": 64,
-            "byte": 8794
           }
         }
       ]
@@ -31582,6 +31591,27 @@
     },
     {
       "source": "function:crates/transcribers-cli/src/main.rs::real_main",
+      "target": "external:rust:ffmpeg.ExtractOptions",
+      "kind": "uses_type",
+      "status": "resolved_external",
+      "origin": "syntax",
+      "sites": [
+        {
+          "start": {
+            "line": 223,
+            "column": 19,
+            "byte": 6969
+          },
+          "end": {
+            "line": 223,
+            "column": 41,
+            "byte": 6991
+          }
+        }
+      ]
+    },
+    {
+      "source": "function:crates/transcribers-cli/src/main.rs::real_main",
       "target": "struct:crates/transcribers-cli/src/main.rs::Cli",
       "kind": "uses_type",
       "status": "resolved_internal",
@@ -31618,27 +31648,6 @@
             "line": 250,
             "column": 22,
             "byte": 7955
-          }
-        }
-      ]
-    },
-    {
-      "source": "function:crates/transcribers-cli/src/main.rs::real_main",
-      "target": "unresolved:rust:ExtractOptions",
-      "kind": "uses_type",
-      "status": "unresolved",
-      "origin": "syntax",
-      "sites": [
-        {
-          "start": {
-            "line": 223,
-            "column": 19,
-            "byte": 6969
-          },
-          "end": {
-            "line": 223,
-            "column": 41,
-            "byte": 6991
           }
         }
       ]
@@ -32977,6 +32986,27 @@
     },
     {
       "source": "function:crates/transcribers-cli/src/main.rs::transcribe_text",
+      "target": "external:rust:ffmpeg.ExtractOptions",
+      "kind": "uses_type",
+      "status": "resolved_external",
+      "origin": "syntax",
+      "sites": [
+        {
+          "start": {
+            "line": 341,
+            "column": 19,
+            "byte": 11229
+          },
+          "end": {
+            "line": 341,
+            "column": 41,
+            "byte": 11251
+          }
+        }
+      ]
+    },
+    {
+      "source": "function:crates/transcribers-cli/src/main.rs::transcribe_text",
       "target": "external:rust:std::Path",
       "kind": "uses_type",
       "status": "resolved_external",
@@ -33067,27 +33097,6 @@
             "line": 350,
             "column": 27,
             "byte": 11500
-          }
-        }
-      ]
-    },
-    {
-      "source": "function:crates/transcribers-cli/src/main.rs::transcribe_text",
-      "target": "unresolved:rust:ExtractOptions",
-      "kind": "uses_type",
-      "status": "unresolved",
-      "origin": "syntax",
-      "sites": [
-        {
-          "start": {
-            "line": 341,
-            "column": 19,
-            "byte": 11229
-          },
-          "end": {
-            "line": 341,
-            "column": 41,
-            "byte": 11251
           }
         }
       ]
@@ -36355,7 +36364,7 @@
     },
     {
       "source": "function:crates/transcribers-cli/src/mcp_http.rs::drain_body",
-      "target": "external:rust:std::TcpStream",
+      "target": "external:rust:std::net.TcpStream",
       "kind": "uses_type",
       "status": "resolved_external",
       "origin": "syntax",
@@ -37390,7 +37399,7 @@
     },
     {
       "source": "function:crates/transcribers-cli/src/mcp_http.rs::handle_connection",
-      "target": "external:rust:std::TcpStream",
+      "target": "external:rust:std::net.TcpStream",
       "kind": "uses_type",
       "status": "resolved_external",
       "origin": "syntax",
@@ -37636,7 +37645,7 @@
     },
     {
       "source": "function:crates/transcribers-cli/src/mcp_http.rs::respond",
-      "target": "external:rust:std::TcpStream",
+      "target": "external:rust:std::net.TcpStream",
       "kind": "uses_type",
       "status": "resolved_external",
       "origin": "syntax",
@@ -40339,6 +40348,27 @@
     },
     {
       "source": "function:crates/transcribers-cli/src/serve.rs::save_upload",
+      "target": "external:rust:axum::extract::multipart.Field",
+      "kind": "uses_type",
+      "status": "resolved_external",
+      "origin": "syntax",
+      "sites": [
+        {
+          "start": {
+            "line": 95,
+            "column": 17,
+            "byte": 2921
+          },
+          "end": {
+            "line": 95,
+            "column": 48,
+            "byte": 2952
+          }
+        }
+      ]
+    },
+    {
+      "source": "function:crates/transcribers-cli/src/serve.rs::save_upload",
       "target": "external:rust:std::Path",
       "kind": "uses_type",
       "status": "resolved_external",
@@ -40354,27 +40384,6 @@
             "line": 96,
             "column": 16,
             "byte": 2973
-          }
-        }
-      ]
-    },
-    {
-      "source": "function:crates/transcribers-cli/src/serve.rs::save_upload",
-      "target": "unresolved:rust:Field",
-      "kind": "uses_type",
-      "status": "unresolved",
-      "origin": "syntax",
-      "sites": [
-        {
-          "start": {
-            "line": 95,
-            "column": 17,
-            "byte": 2921
-          },
-          "end": {
-            "line": 95,
-            "column": 48,
-            "byte": 2952
           }
         }
       ]
@@ -42664,6 +42673,27 @@
     },
     {
       "source": "function:crates/transcribers-ffmpeg/src/lib.rs::convert_audio",
+      "target": "method:crates/transcribers-ffmpeg/src/lib.rs::AudioFormat.encode_args",
+      "kind": "calls",
+      "status": "resolved_internal",
+      "origin": "lexical",
+      "sites": [
+        {
+          "start": {
+            "line": 141,
+            "column": 40,
+            "byte": 4528
+          },
+          "end": {
+            "line": 141,
+            "column": 60,
+            "byte": 4548
+          }
+        }
+      ]
+    },
+    {
+      "source": "function:crates/transcribers-ffmpeg/src/lib.rs::convert_audio",
       "target": "unresolved:rust:arg",
       "kind": "calls",
       "status": "unresolved",
@@ -42700,27 +42730,6 @@
             "line": 143,
             "column": 21,
             "byte": 4611
-          }
-        }
-      ]
-    },
-    {
-      "source": "function:crates/transcribers-ffmpeg/src/lib.rs::convert_audio",
-      "target": "unresolved:rust:encode_args",
-      "kind": "calls",
-      "status": "unresolved",
-      "origin": "syntax",
-      "sites": [
-        {
-          "start": {
-            "line": 141,
-            "column": 40,
-            "byte": 4528
-          },
-          "end": {
-            "line": 141,
-            "column": 60,
-            "byte": 4548
           }
         }
       ]
@@ -47554,7 +47563,7 @@
     },
     {
       "source": "function:crates/transcribers-whisper/src/lib.rs::silence_log",
-      "target": "unresolved:rust:ggml_log_level",
+      "target": "unresolved:rust:whisper_rs_sys::ggml_log_level",
       "kind": "uses_type",
       "status": "unresolved",
       "origin": "syntax",
@@ -48949,9 +48958,9 @@
     },
     {
       "source": "function:crates/transcribers-whisper/src/lib.rs::tests.render_json_is_valid_shape",
-      "target": "unresolved:rust:Value",
+      "target": "external:rust:serde_json.Value",
       "kind": "uses_type",
-      "status": "unresolved",
+      "status": "resolved_external",
       "origin": "syntax",
       "sites": [
         {
@@ -50500,6 +50509,27 @@
     },
     {
       "source": "function:crates/transcribers-whisper/src/lib.rs::transcribe",
+      "target": "external:rust:external:unresolved:whisper_rs::SamplingStrategy.Greedy",
+      "kind": "uses_type",
+      "status": "resolved_external",
+      "origin": "syntax",
+      "sites": [
+        {
+          "start": {
+            "line": 113,
+            "column": 38,
+            "byte": 3226
+          },
+          "end": {
+            "line": 113,
+            "column": 62,
+            "byte": 3250
+          }
+        }
+      ]
+    },
+    {
+      "source": "function:crates/transcribers-whisper/src/lib.rs::transcribe",
       "target": "external:rust:std::Path",
       "kind": "uses_type",
       "status": "resolved_external",
@@ -50602,27 +50632,6 @@
             "line": 153,
             "column": 18,
             "byte": 4539
-          }
-        }
-      ]
-    },
-    {
-      "source": "function:crates/transcribers-whisper/src/lib.rs::transcribe",
-      "target": "unresolved:rust:Greedy",
-      "kind": "uses_type",
-      "status": "unresolved",
-      "origin": "syntax",
-      "sites": [
-        {
-          "start": {
-            "line": 113,
-            "column": 38,
-            "byte": 3226
-          },
-          "end": {
-            "line": 113,
-            "column": 62,
-            "byte": 3250
           }
         }
       ]
@@ -62003,6 +62012,27 @@
     },
     {
       "source": "struct:crates/transcribers-cli/src/main.rs::Cli",
+      "target": "external:rust:ffmpeg.AudioFormat",
+      "kind": "uses_type",
+      "status": "resolved_external",
+      "origin": "syntax",
+      "sites": [
+        {
+          "start": {
+            "line": 82,
+            "column": 19,
+            "byte": 2713
+          },
+          "end": {
+            "line": 82,
+            "column": 38,
+            "byte": 2732
+          }
+        }
+      ]
+    },
+    {
+      "source": "struct:crates/transcribers-cli/src/main.rs::Cli",
       "target": "external:rust:std::PathBuf",
       "kind": "uses_type",
       "status": "resolved_external",
@@ -62030,27 +62060,6 @@
             "line": 52,
             "column": 27,
             "byte": 1700
-          }
-        }
-      ]
-    },
-    {
-      "source": "struct:crates/transcribers-cli/src/main.rs::Cli",
-      "target": "unresolved:rust:AudioFormat",
-      "kind": "uses_type",
-      "status": "unresolved",
-      "origin": "syntax",
-      "sites": [
-        {
-          "start": {
-            "line": 82,
-            "column": 19,
-            "byte": 2713
-          },
-          "end": {
-            "line": 82,
-            "column": 38,
-            "byte": 2732
           }
         }
       ]
@@ -62218,14 +62227,14 @@
     "files": 64,
     "packages": 2,
     "nodes": 1201,
-    "edges": 2800,
+    "edges": 2801,
     "symbols": 652,
-    "unresolvedEdges": 210,
+    "unresolvedEdges": 203,
     "diagnostics": 6,
     "byNodeKind": {
       "constant": 113,
       "enum": 2,
-      "external_symbol": 272,
+      "external_symbol": 277,
       "file": 64,
       "framework": 7,
       "function": 150,
@@ -62237,11 +62246,11 @@
       "repository": 1,
       "struct": 7,
       "type": 2,
-      "unknown": 130,
+      "unknown": 125,
       "variable": 259
     },
     "byEdgeKind": {
-      "calls": 1000,
+      "calls": 1001,
       "contains": 814,
       "defines": 661,
       "exports": 91,
@@ -62258,9 +62267,9 @@
       "typescript": 102
     },
     "byStatus": {
-      "resolved_external": 790,
-      "resolved_internal": 1800,
-      "unresolved": 210
+      "resolved_external": 796,
+      "resolved_internal": 1802,
+      "unresolved": 203
     },
     "byFramework": {
       "axum": 1,
