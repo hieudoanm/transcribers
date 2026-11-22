@@ -156,8 +156,6 @@ digraph tracers {
   "external:rust:axum::extract::multipart.Field" [label="Field\nexternal_symbol", color="lightgray"];
   "external:rust:axum::serve.map_err" [label="map_err\nexternal_symbol", color="lightgray"];
   "external:rust:external:unresolved:whisper_rs::SamplingStrategy.Greedy" [label="Greedy\nexternal_symbol", color="lightgray"];
-  "external:rust:ffmpeg.AudioFormat" [label="AudioFormat\nexternal_symbol", color="lightgray"];
-  "external:rust:ffmpeg.ExtractOptions" [label="ExtractOptions\nexternal_symbol", color="lightgray"];
   "external:rust:ffmpeg.convert_audio" [label="convert_audio\nexternal_symbol", color="lightgray"];
   "external:rust:ffmpeg.extract_audio_with" [label="extract_audio_with\nexternal_symbol", color="lightgray"];
   "external:rust:ffmpeg.has_audio_stream" [label="has_audio_stream\nexternal_symbol", color="lightgray"];
@@ -2307,9 +2305,9 @@ digraph tracers {
   "function:crates/transcribers-cli/src/main.rs::real_main" -> "unresolved:rust:remove_dir_all" [label="calls", style="dotted"];
   "function:crates/transcribers-cli/src/main.rs::real_main" -> "unresolved:rust:temp_dir" [label="calls", style="dotted"];
   "function:crates/transcribers-cli/src/main.rs::real_main" -> "unresolved:rust:with_extension" [label="calls", style="dotted"];
-  "function:crates/transcribers-cli/src/main.rs::real_main" -> "external:rust:ffmpeg.ExtractOptions" [label="uses_type", style="dotted"];
   "function:crates/transcribers-cli/src/main.rs::real_main" -> "struct:crates/transcribers-cli/src/main.rs::Cli" [label="uses_type", style="dotted"];
   "function:crates/transcribers-cli/src/main.rs::real_main" -> "struct:crates/transcribers-cli/src/main.rs::Job" [label="uses_type", style="dotted"];
+  "function:crates/transcribers-cli/src/main.rs::real_main" -> "struct:crates/transcribers-ffmpeg/src/lib.rs::ExtractOptions" [label="uses_type", style="dotted"];
   "function:crates/transcribers-cli/src/main.rs::tests.clap_rejects_bad_input" -> "external:rust:std::assert" [label="calls", style="bold"];
   "function:crates/transcribers-cli/src/main.rs::tests.clap_rejects_bad_input" -> "external:rust:std::vec" [label="calls", style="bold"];
   "function:crates/transcribers-cli/src/main.rs::tests.cli" -> "external:rust:std::unwrap" [label="calls", style="bold"];
@@ -2350,10 +2348,10 @@ digraph tracers {
   "function:crates/transcribers-cli/src/main.rs::transcribe_text" -> "external:rust:whisper.transcribe" [label="calls", style="bold"];
   "function:crates/transcribers-cli/src/main.rs::transcribe_text" -> "external:rust:whisper.validate_language" [label="calls", style="bold"];
   "function:crates/transcribers-cli/src/main.rs::transcribe_text" -> "struct:crates/transcribers-whisper/src/lib.rs::TranscribeOptions" [label="calls", style="bold"];
-  "function:crates/transcribers-cli/src/main.rs::transcribe_text" -> "external:rust:ffmpeg.ExtractOptions" [label="uses_type", style="dotted"];
   "function:crates/transcribers-cli/src/main.rs::transcribe_text" -> "external:rust:std::Path" [label="uses_type", style="dotted"];
   "function:crates/transcribers-cli/src/main.rs::transcribe_text" -> "external:rust:std::PathBuf" [label="uses_type", style="dotted"];
   "function:crates/transcribers-cli/src/main.rs::transcribe_text" -> "struct:crates/transcribers-cli/src/main.rs::Job" [label="uses_type", style="dotted"];
+  "function:crates/transcribers-cli/src/main.rs::transcribe_text" -> "struct:crates/transcribers-ffmpeg/src/lib.rs::ExtractOptions" [label="uses_type", style="dotted"];
   "function:crates/transcribers-cli/src/main.rs::transcribe_text" -> "struct:crates/transcribers-whisper/src/lib.rs::TranscribeOptions" [label="uses_type", style="dotted"];
   "function:crates/transcribers-cli/src/mcp.rs::annotations" -> "external:unresolved:serde_json::json" [label="calls", style="bold"];
   "function:crates/transcribers-cli/src/mcp.rs::annotations" -> "external:rust:serde_json::Value" [label="uses_type", style="dotted"];
@@ -4001,8 +3999,8 @@ digraph tracers {
   "repository:." -> "framework:serde" [label="uses_framework", style="dashed"];
   "repository:." -> "framework:tailwindcss:tailwindcss" [label="uses_framework", style="dashed"];
   "repository:." -> "framework:tokio" [label="uses_framework", style="dashed"];
+  "struct:crates/transcribers-cli/src/main.rs::Cli" -> "enum:crates/transcribers-ffmpeg/src/lib.rs::AudioFormat" [label="uses_type", style="dotted"];
   "struct:crates/transcribers-cli/src/main.rs::Cli" -> "enum:crates/transcribers-whisper/src/lib.rs::Format" [label="uses_type", style="dotted"];
-  "struct:crates/transcribers-cli/src/main.rs::Cli" -> "external:rust:ffmpeg.AudioFormat" [label="uses_type", style="dotted"];
   "struct:crates/transcribers-cli/src/main.rs::Cli" -> "external:rust:std::PathBuf" [label="uses_type", style="dotted"];
   "struct:crates/transcribers-cli/src/main.rs::Job" -> "enum:crates/transcribers-whisper/src/lib.rs::Format" [label="uses_type", style="dotted"];
   "struct:crates/transcribers-whisper/src/lib.rs::Transcript" -> "struct:crates/transcribers-whisper/src/lib.rs::Segment" [label="uses_type", style="dotted"];
