@@ -592,14 +592,14 @@
       "displayName": "Axum",
       "family": "rust",
       "version": null,
-      "confidence": "medium"
+      "confidence": "high"
     },
     {
       "name": "clap.rs",
       "displayName": "clap.rs",
       "family": "rust",
       "version": null,
-      "confidence": "medium"
+      "confidence": "high"
     },
     {
       "name": "nextjs",
@@ -613,6 +613,27 @@
       "displayName": "React",
       "family": "ecmascript",
       "version": "tailwindcss",
+      "confidence": "high"
+    },
+    {
+      "name": "serde",
+      "displayName": "Serde",
+      "family": "rust",
+      "version": null,
+      "confidence": "high"
+    },
+    {
+      "name": "tailwindcss",
+      "displayName": "Tailwind CSS",
+      "family": "ecmascript",
+      "version": "tailwindcss",
+      "confidence": "medium"
+    },
+    {
+      "name": "tokio",
+      "displayName": "Tokio",
+      "family": "rust",
+      "version": null,
       "confidence": "high"
     }
   ],
@@ -3930,7 +3951,7 @@
       "kind": "framework",
       "name": "Axum",
       "metadata": {
-        "confidence": "medium",
+        "confidence": "high",
         "family": "rust",
         "framework": "axum"
       }
@@ -3940,7 +3961,7 @@
       "kind": "framework",
       "name": "clap.rs",
       "metadata": {
-        "confidence": "medium",
+        "confidence": "high",
         "family": "rust",
         "framework": "clap.rs"
       }
@@ -3963,6 +3984,36 @@
         "confidence": "high",
         "family": "ecmascript",
         "framework": "react"
+      }
+    },
+    {
+      "id": "framework:serde",
+      "kind": "framework",
+      "name": "Serde",
+      "metadata": {
+        "confidence": "high",
+        "family": "rust",
+        "framework": "serde"
+      }
+    },
+    {
+      "id": "framework:tailwindcss:tailwindcss",
+      "kind": "framework",
+      "name": "Tailwind CSS",
+      "metadata": {
+        "confidence": "medium",
+        "family": "ecmascript",
+        "framework": "tailwindcss"
+      }
+    },
+    {
+      "id": "framework:tokio",
+      "kind": "framework",
+      "name": "Tokio",
+      "metadata": {
+        "confidence": "high",
+        "family": "rust",
+        "framework": "tokio"
       }
     },
     {
@@ -61707,6 +61758,27 @@
       "origin": "syntax"
     },
     {
+      "source": "repository:.",
+      "target": "framework:serde",
+      "kind": "uses_framework",
+      "status": "resolved_internal",
+      "origin": "syntax"
+    },
+    {
+      "source": "repository:.",
+      "target": "framework:tailwindcss:tailwindcss",
+      "kind": "uses_framework",
+      "status": "resolved_internal",
+      "origin": "syntax"
+    },
+    {
+      "source": "repository:.",
+      "target": "framework:tokio",
+      "kind": "uses_framework",
+      "status": "resolved_internal",
+      "origin": "syntax"
+    },
+    {
       "source": "struct:crates/transcribers-cli/src/main.rs::Cli",
       "target": "unresolved:rust:AudioFormat",
       "kind": "uses_type",
@@ -61962,8 +62034,8 @@
   "statistics": {
     "files": 64,
     "packages": 2,
-    "nodes": 1192,
-    "edges": 2771,
+    "nodes": 1195,
+    "edges": 2774,
     "symbols": 640,
     "unresolvedEdges": 873,
     "diagnostics": 7,
@@ -61972,7 +62044,7 @@
       "enum": 2,
       "external_symbol": 99,
       "file": 64,
-      "framework": 4,
+      "framework": 7,
       "function": 150,
       "interface": 19,
       "method": 5,
@@ -61991,7 +62063,7 @@
       "defines": 649,
       "exports": 87,
       "imports": 95,
-      "uses_framework": 4,
+      "uses_framework": 7,
       "uses_type": 143
     },
     "byLanguage": {
@@ -62004,14 +62076,17 @@
     },
     "byStatus": {
       "resolved_external": 168,
-      "resolved_internal": 1730,
+      "resolved_internal": 1733,
       "unresolved": 873
     },
     "byFramework": {
       "axum": 1,
       "clap.rs": 1,
       "nextjs": 1,
-      "react": 1
+      "react": 1,
+      "serde": 1,
+      "tailwindcss": 1,
+      "tokio": 1
     }
   }
 };</script>

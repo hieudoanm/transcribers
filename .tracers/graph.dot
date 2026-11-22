@@ -273,6 +273,9 @@ digraph tracers {
   "framework:clap.rs" [label="clap.rs\nframework", color="magenta"];
   "framework:nextjs:tailwindcss" [label="Next.js\nframework", color="magenta"];
   "framework:react:tailwindcss" [label="React\nframework", color="magenta"];
+  "framework:serde" [label="Serde\nframework", color="magenta"];
+  "framework:tailwindcss:tailwindcss" [label="Tailwind CSS\nframework", color="magenta"];
+  "framework:tokio" [label="Tokio\nframework", color="magenta"];
   "function:crates/transcribers-cli/build.rs::main" [label="main\nfunction", color="red"];
   "function:crates/transcribers-cli/src/main.rs::audio_dest" [label="audio_dest\nfunction", color="red"];
   "function:crates/transcribers-cli/src/main.rs::default_threads" [label="default_threads\nfunction", color="red"];
@@ -3962,6 +3965,9 @@ digraph tracers {
   "repository:." -> "framework:clap.rs" [label="uses_framework", style="dashed"];
   "repository:." -> "framework:nextjs:tailwindcss" [label="uses_framework", style="dashed"];
   "repository:." -> "framework:react:tailwindcss" [label="uses_framework", style="dashed"];
+  "repository:." -> "framework:serde" [label="uses_framework", style="dashed"];
+  "repository:." -> "framework:tailwindcss:tailwindcss" [label="uses_framework", style="dashed"];
+  "repository:." -> "framework:tokio" [label="uses_framework", style="dashed"];
   "struct:crates/transcribers-cli/src/main.rs::Cli" -> "unresolved:rust:AudioFormat" [label="uses_type", style="dotted"];
   "struct:crates/transcribers-cli/src/main.rs::Cli" -> "unresolved:rust:Format" [label="uses_type", style="dotted"];
   "struct:crates/transcribers-cli/src/main.rs::Cli" -> "unresolved:rust:PathBuf" [label="uses_type", style="dotted"];
