@@ -3626,6 +3626,12 @@
       "language": "rust"
     },
     {
+      "id": "external:rust:std::str.FromStr",
+      "kind": "external_symbol",
+      "name": "FromStr",
+      "language": "rust"
+    },
+    {
       "id": "external:rust:std::strip_prefix",
       "kind": "external_symbol",
       "name": "strip_prefix",
@@ -39019,6 +39025,27 @@
       ]
     },
     {
+      "source": "function:crates/transcribers-cli/src/serve.rs::parse_num",
+      "target": "external:rust:std::str.FromStr",
+      "kind": "uses_type",
+      "status": "resolved_external",
+      "origin": "syntax",
+      "sites": [
+        {
+          "start": {
+            "line": 121,
+            "column": 17,
+            "byte": 3642
+          },
+          "end": {
+            "line": 121,
+            "column": 34,
+            "byte": 3659
+          }
+        }
+      ]
+    },
+    {
       "source": "function:crates/transcribers-cli/src/serve.rs::run",
       "target": "external:rust:DefaultBodyLimit.disable",
       "kind": "calls",
@@ -61759,15 +61786,15 @@
   "statistics": {
     "files": 64,
     "packages": 2,
-    "nodes": 1199,
-    "edges": 2801,
+    "nodes": 1200,
+    "edges": 2802,
     "symbols": 652,
     "unresolvedEdges": 203,
     "diagnostics": 6,
     "byNodeKind": {
       "constant": 113,
       "enum": 2,
-      "external_symbol": 275,
+      "external_symbol": 276,
       "file": 64,
       "framework": 7,
       "function": 150,
@@ -61789,18 +61816,18 @@
       "exports": 91,
       "imports": 84,
       "uses_framework": 7,
-      "uses_type": 143
+      "uses_type": 144
     },
     "byLanguage": {
       "bash": 10,
       "javascript": 9,
       "markdown": 54,
-      "rust": 758,
+      "rust": 759,
       "tsx": 256,
       "typescript": 102
     },
     "byStatus": {
-      "resolved_external": 793,
+      "resolved_external": 794,
       "resolved_internal": 1805,
       "unresolved": 203
     },

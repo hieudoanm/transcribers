@@ -270,6 +270,7 @@ digraph tracers {
   "external:rust:std::split" [label="split\nexternal_symbol", color="lightgray"];
   "external:rust:std::split_whitespace" [label="split_whitespace\nexternal_symbol", color="lightgray"];
   "external:rust:std::starts_with" [label="starts_with\nexternal_symbol", color="lightgray"];
+  "external:rust:std::str.FromStr" [label="FromStr\nexternal_symbol", color="lightgray"];
   "external:rust:std::strip_prefix" [label="strip_prefix\nexternal_symbol", color="lightgray"];
   "external:rust:std::take" [label="take\nexternal_symbol", color="lightgray"];
   "external:rust:std::thread.available_parallelism" [label="available_parallelism\nexternal_symbol", color="lightgray"];
@@ -2597,6 +2598,7 @@ digraph tracers {
   "function:crates/transcribers-cli/src/serve.rs::parse_num" -> "external:rust:std::map_err" [label="calls", style="bold"];
   "function:crates/transcribers-cli/src/serve.rs::parse_num" -> "external:rust:std::parse" [label="calls", style="bold"];
   "function:crates/transcribers-cli/src/serve.rs::parse_num" -> "function:crates/transcribers-cli/src/serve.rs::field" [label="calls", style="bold"];
+  "function:crates/transcribers-cli/src/serve.rs::parse_num" -> "external:rust:std::str.FromStr" [label="uses_type", style="dotted"];
   "function:crates/transcribers-cli/src/serve.rs::run" -> "external:rust:DefaultBodyLimit.disable" [label="calls", style="bold"];
   "function:crates/transcribers-cli/src/serve.rs::run" -> "external:rust:Router.new" [label="calls", style="bold"];
   "function:crates/transcribers-cli/src/serve.rs::run" -> "external:rust:ServeArgs.try_parse_from" [label="calls", style="bold"];
