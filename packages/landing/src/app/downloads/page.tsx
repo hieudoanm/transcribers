@@ -143,6 +143,8 @@ const Downloads: FC = () => (
           </h1>
           <p className="mt-3 text-lg text-gray-500">
             ffmpeg + whisper.cpp transcription in a single binary — fully local.
+          </p>
+          <p className="mt-3 text-lg text-gray-500">
             Assets are in the{' '}
             <a href={RELEASE_PAGE} className="text-primary">
               latest release
