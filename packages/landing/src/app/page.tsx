@@ -5,16 +5,16 @@ import Hero from '@/components/molecules/Hero';
 import SectionHead from '@/components/molecules/SectionHead';
 import Terminal from '@/components/molecules/Terminal';
 import {
-  LuBot,
-  LuCaptions,
-  LuDownload,
-  LuFileText,
-  LuGlobe,
-  LuLock,
-  LuMusic,
-  LuServer,
-  LuZap,
-} from 'react-icons/lu';
+  PiRobot,
+  PiSubtitles,
+  PiDownloadSimple,
+  PiFileText,
+  PiGlobe,
+  PiLock,
+  PiMusicNote,
+  PiDesktopTower,
+  PiLightning,
+} from 'react-icons/pi';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -24,52 +24,52 @@ const GITHUB = 'https://github.com/hieudoanm/transcribers';
 
 const FEATURES: Feature[] = [
   {
-    icon: LuLock,
+    icon: PiLock,
     title: 'Fully local',
     body: 'No uploads, no API keys, no accounts. Audio is extracted and transcribed on your own hardware.',
   },
   {
-    icon: LuFileText,
+    icon: PiFileText,
     title: 'Four output formats',
     body: 'Plain text, SRT and WebVTT subtitles, or JSON with millisecond timestamps.',
   },
   {
-    icon: LuDownload,
+    icon: PiDownloadSimple,
     title: 'Models on demand',
     body: 'Pick tiny through large-v3 by name; missing models download once into a local cache.',
   },
   {
-    icon: LuZap,
+    icon: PiLightning,
     title: 'One small binary',
     body: 'whisper.cpp is compiled in — about 1.6 MB, statically linked, only ffmpeg required.',
   },
   {
-    icon: LuCaptions,
+    icon: PiSubtitles,
     title: 'ffmpeg pipeline',
     body: 'Any container ffmpeg reads — mp4, mkv, mov, wav, mp3 — is decoded to 16 kHz mono WAV before transcription.',
   },
   {
-    icon: LuCaptions,
+    icon: PiSubtitles,
     title: 'Subtitle-ready',
     body: 'SRT and WebVTT output with millisecond timestamps, ready for players and video editors.',
   },
   {
-    icon: LuGlobe,
+    icon: PiGlobe,
     title: 'URLs in, transcripts out',
     body: 'Pass a YouTube video, Short or Instagram reel to --url — yt-dlp fetches it, then the same local pipeline runs.',
   },
   {
-    icon: LuMusic,
+    icon: PiMusicNote,
     title: 'Audio extraction',
     body: '--audio writes wav, mp3 or m4a next to the transcript; --audio-only converts without transcribing.',
   },
   {
-    icon: LuBot,
+    icon: PiRobot,
     title: 'MCP server',
     body: 'transcribers mcp lets agents transcribe media and list models through the same local pipeline — no extra setup, no uploads.',
   },
   {
-    icon: LuServer,
+    icon: PiDesktopTower,
     title: 'HTTP server',
     body: 'transcribers serve exposes POST /transcribe — upload a file or send a URL, get the transcript back as JSON or subtitles.',
   },
