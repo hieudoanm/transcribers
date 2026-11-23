@@ -156,7 +156,6 @@ const DEMO_TERMINALS: {
   },
 ];
 
-
 const INSTALL_LINES = [
   '$ curl -fsSL https://raw.githubusercontent.com/hieudoanm/transcribers/master/scripts/install.sh | bash',
   'Installed to /usr/local/bin/transcribers',
@@ -228,12 +227,8 @@ const HomePage: NextPage = () => (
     <CTA
       title="Ready to transcribe?"
       description="One binary, fully local — video and audio to text."
-      primary={{ label: 'View on GitHub', href: GITHUB, external: true }}
-      secondary={{
-        label: 'Read the README',
-        href: `${GITHUB}#readme`,
-        external: true,
-      }}
+      primary={{ label: 'Download', href: '/downloads/' }}
+      secondary={{ label: 'View Docs', href: '/docs/' }}
     />
   </main>
 );
