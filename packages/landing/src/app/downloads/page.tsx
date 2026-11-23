@@ -70,7 +70,7 @@ const Downloads: FC = () => (
           </h1>
           <p className="mt-3 text-lg text-gray-500">
             ffmpeg + whisper.cpp transcription in a single binary — fully local.
-            Assets and SHA-256 checksums are in the{' '}
+            Prebuilt assets are in the{' '}
             <a href={RELEASE_PAGE} className="text-primary">
               latest release
             </a>
@@ -110,8 +110,7 @@ const Downloads: FC = () => (
             Install script
           </h2>
           <p className="text-base-content/60 mb-4 text-sm">
-            Downloads the right binary and verifies it against{' '}
-            <code>transcribers-checksums.txt</code>. Requires{' '}
+            Downloads the right binary for your platform. Requires{' '}
             <code>ffmpeg</code> on PATH at runtime. Installs to{' '}
             <code>~/.local/bin</code>.
           </p>
