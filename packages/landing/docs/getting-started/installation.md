@@ -34,3 +34,10 @@ cargo test --workspace
 whisper.cpp is compiled into the binary at build time — no separate whisper
 install. Models (`tiny` through `large-v3`, multilingual and `.en` variants)
 download automatically on first use into `~/.cache/transcribers/models/`.
+
+## Per-platform guides
+
+- [macOS (Apple Silicon)](../guides/how-to-install-cli-macos-silicon.md)
+- [macOS (Intel)](../guides/how-to-install-cli-macos-intel.md)
+- [Linux](../guides/how-to-install-cli-linux.md)
+- [Windows](../guides/how-to-install-cli-windows.md)

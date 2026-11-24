@@ -1,9 +1,8 @@
 # transcribers documentation
 
-**transcribers** extracts transcripts from video and audio files locally —
-a single Rust binary powered by `ffmpeg` for audio extraction and
-`whisper.cpp` for transcription. Everything runs offline; media never leaves
-your machine.
+**transcribers** extracts transcripts from video and audio files locally — a
+single Rust binary powered by `ffmpeg` for audio extraction and `whisper.cpp`
+for transcription. Everything runs offline; media never leaves your machine.
 
 ## Sections
 
@@ -16,5 +15,12 @@ Plain text, SRT, WebVTT subtitles, or JSON with timestamps.
 
 An MCP server (`transcribers mcp`) exposes transcription and model listing to
 MCP clients — see [MCP server](guides/mcp-server.md). An HTTP server
-(`transcribers serve`) accepts file uploads and URLs at `POST /transcribe` —
-see [Usage](guides/usage.md#http-server).
+(`transcribers serve`) accepts file uploads and URLs at `POST /transcribe` — see
+[Usage](guides/usage.md#http-server).
+
+## Installation guides
+
+- [CLI on macOS (Apple Silicon)](guides/how-to-install-cli-macos-silicon.md)
+- [CLI on macOS (Intel)](guides/how-to-install-cli-macos-intel.md)
+- [CLI on Linux](guides/how-to-install-cli-linux.md)
+- [CLI on Windows](guides/how-to-install-cli-windows.md)
